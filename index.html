@@ -187,7 +187,9 @@
 					var objLoader = new THREE.OBJLoader();
 					objLoader.setMaterials( materials );
 					objLoader.load( 'models/male02.obj', function ( object ) {
-						object.position.y = - 95;
+						object.position.y = 0;
+						object.castShadow = true;
+						object.receiveShadow = true;
 						scene.add( object );
 					}, onProgress, onError );
 				});
