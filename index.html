@@ -189,6 +189,7 @@
 					objLoader.load( 'models/Rock1.obj', function ( object ) {
 						object.position.y = 5;
 						object.castShadow = true;
+						object.scale.set( 10, 10, 10 )
 						object.receiveShadow = true;
 						scene.add( object );
 					}, onProgress, onError );
