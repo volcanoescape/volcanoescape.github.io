@@ -182,11 +182,11 @@
 				};
 				var onError = function ( xhr ) { };
 				var mtlLoader = new THREE.MTLLoader();
-				mtlLoader.load( 'models/male02.mtl', function( materials ) {
+				mtlLoader.load( 'models/Rock1.mtl', function( materials ) {
 					materials.preload();
 					var objLoader = new THREE.OBJLoader();
 					objLoader.setMaterials( materials );
-					objLoader.load( 'models/male02.obj', function ( object ) {
+					objLoader.load( 'models/Rock1.obj', function ( object ) {
 						object.position.y = 0;
 						object.castShadow = true;
 						object.receiveShadow = true;
