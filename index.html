@@ -46,6 +46,7 @@
 		<script src="js/three.js"></script>
 		<script src="js/controls/controls.js"></script>
 		<script src="js/loaders/OBJLoader.js"></script>
+		<script src="js/loaders/MTLLoader.js"></script>
 
 		<div id="blocker">
 
@@ -184,34 +185,31 @@
 				var texture = textureLoader.load( 'UV_Grid_Sm.jpg' );
 
 				// model
-
 				var onProgress = function ( xhr ) {
 					if ( xhr.lengthComputable ) {
 						var percentComplete = xhr.loaded / xhr.total * 100;
 						console.log( Math.round(percentComplete, 2) + '% downloaded' );
 					}
 				};
+				var onError = function ( xhr ) { };
+				//THREE.Loader.Handlers.add( /\.dds$/i, new THREE.DDSLoader() );
+				var mtlLoader = new THREE.MTLLoader();
+				mtlLoader.load( 'models/Stone.mtl', function( materials ) {
+					materials.preload();
+					var objLoader = new THREE.OBJLoader();
+					objLoader.setMaterials( materials );
+					objLoader.load( 'models/Stone.mtl', function ( object ) {
+						object.position.set( 8, 0, -14 );
+						object.rotation.y = - Math.PI * 90 / 180;
+						object.scale.set( 10, 10, 10 );
+						object.castShadow = true;
+						object.receiveShadow = true;
+						scene.add( object );
+						objects.push( object );
+					}, onProgress, onError );
+				});
 
-				var onError = function ( xhr ) {
-				};
 
-				var loader = new THREE.OBJLoader( manager );
-				loader.load( 'models/Stone.obj', function ( object ) {
-
-					object.traverse( function ( child ) {
-
-						if ( child instanceof THREE.Mesh ) {
-
-							child.material.map = texture;
-
-						}
-
-					} );
-
-					object.position.y = 95;
-					scene.add( object );
-
-				}, onProgress, onError );
 				//
 				renderer = new THREE.WebGLRenderer();
 				renderer.setPixelRatio( window.devicePixelRatio );
