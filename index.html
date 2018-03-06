@@ -43,10 +43,9 @@
 		</style>
 	</head>
 	<body>
+
 		<script src="js/three.js"></script>
 		<script src="js/controls/controls.js"></script>
-		<script src="js/loaders/OBJLoader.js"></script>
-		<script src="js/loaders/MTLLoader.js"></script>
 
 		<div id="blocker">
 
@@ -59,6 +58,8 @@
 		</div>
 
 		<script>
+
+			(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//rawgit.com/mrdoob/stats.js/master/build/stats.min.js';document.head.appendChild(script);})()
 			var camera, scene, renderer, controls;
 			var objects = [];
 			var raycaster;
@@ -98,6 +99,30 @@
 			} else {
 				instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
 			}
+			function spawnRockObject(x,y,z){
+				var onProgress = function ( xhr ) {
+					if ( xhr.lengthComputable ) {
+						var percentComplete = xhr.loaded / xhr.total * 100;
+						console.log( Math.round(percentComplete, 2) + '% downloaded' );
+					}
+				};
+				var onError = function ( xhr ) { };
+				var mtlLoader = new THREE.MTLLoader();
+				mtlLoader.load( 'models/Rock1.mtl', function( materials ) {
+					materials.preload();
+					var objLoader = new THREE.OBJLoader();
+					objLoader.setMaterials( materials );
+					objLoader.load( 'models/Rock1.obj', function ( object ) {
+						object.position.x = x;
+						object.position.y = y;
+						object.position.z = z;
+						object.castShadow = true;
+						object.scale.set( 5, 5, 5 )
+						object.receiveShadow = true;
+						scene.add( object );
+					}, onProgress, onError );
+				});
+			}
 			init();
 			animate();
 			var controlsEnabled = false;
@@ -109,6 +134,7 @@
 			var prevTime = performance.now();
 			var velocity = new THREE.Vector3();
 			var direction = new THREE.Vector3();
+            var floorGeometry;
 			function init() {
 				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
 				scene = new THREE.Scene();
@@ -162,40 +188,74 @@
 							break;
 					}
 				};
+
+                
 				document.addEventListener( 'keydown', onKeyDown, false );
 				document.addEventListener( 'keyup', onKeyUp, false );
-				raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
-				// floor
-				var floorGeometry = new THREE.PlaneGeometry( 2000, 2000, 100, 100 );
+
+                //----------------------------------------------------------------//
+                // floor and cubes//
+                //----------------------------------------------------------------//
+                floorGeometry = new THREE.PlaneGeometry( 130, 130, 130, 130 );
 				floorGeometry.rotateX( - Math.PI / 2 );
-				var floorMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 } );
-				var floor = new THREE.Mesh( floorGeometry, floorMaterial );
-				scene.add( floor );
+
+				for ( var i = 0, l = floorGeometry.vertices.length; i < l; i ++ ) {
+
+					var vertex = floorGeometry.vertices[ i ];
+					vertex.x += Math.random() * 15 - 10;
+					vertex.y += Math.random() * 2;
+					vertex.z += Math.random() * 15 - 10;
+
+
+				}
+
+	            var boxGeometry = new THREE.BoxGeometry( 12, 12, 12);
+				for ( var i = 0, l = floorGeometry.faces.length; i < l; i ++ ) {
+
+					var face = floorGeometry.faces[ i ];
+
+
+				}
+
+
+				var CircleGeometry = new THREE.CircleGeometry( 5, 32, 5, 40);
+				var CircleMaterial = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
 				
 
-				// model
-				var onProgress = function ( xhr ) {
-					if ( xhr.lengthComputable ) {
-						var percentComplete = xhr.loaded / xhr.total * 100;
-						console.log( Math.round(percentComplete, 2) + '% downloaded' );
-					}
-				};
-				var onError = function ( xhr ) { };
-				var mtlLoader = new THREE.MTLLoader();
-				mtlLoader.load( 'models/Rock1.mtl', function( materials ) {
-					materials.preload();
-					var objLoader = new THREE.OBJLoader();
-					objLoader.setMaterials( materials );
-					objLoader.load( 'models/Rock1.obj', function ( object ) {
-						object.position.y = 5;
-						object.castShadow = true;
-						object.scale.set( 10, 10, 10 )
-						object.receiveShadow = true;
-						scene.add( object );
-					}, onProgress, onError );
-				});
+
+				// objects
+		
+				for ( var i = 0; i < 1200; i ++ ) {
+
+					var boxMaterial = new THREE.MeshPhongMaterial({color:0xff0000, transparent:true, opacity:0, side: THREE.DoubleSide});
+					//boxMaterial.color.setHSL( Math.random() * 0.2 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
+
+					var box = new THREE.Mesh( boxGeometry, boxMaterial );
+					var randomXPos = Math.floor( Math.random() * 20 - 10 ) * 7;
+					var randomYPos = Math.floor( Math.random() * 600 ) * 20 + 10;
+					var randomZPos = Math.floor( Math.random() * 20 - 10 ) * 7;
+					box.position.x = randomXPos;
+					box.position.y = randomYPos;
+					box.position.z = randomZPos;
+					spawnRockObject(randomXPos,randomYPos,randomZPos);
+					scene.add( box );
+					objects.push( box );
+
+				}
 
 
+
+
+		
+                //----------------------------------------------------------------//
+
+				raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
+				// floor
+
+
+				var floorMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000} );
+				var floor = new THREE.Mesh( floorGeometry, floorMaterial );
+				scene.add( floor );
 				//
 				renderer = new THREE.WebGLRenderer();
 				renderer.setPixelRatio( window.devicePixelRatio );
@@ -218,9 +278,9 @@
 					var onObject = intersections.length > 0;
 					var time = performance.now();
 					var delta = ( time - prevTime ) / 1000;
-					velocity.x -= velocity.x * 10.0 * delta;
+ 					velocity.x -= velocity.x * 10.0 * delta;
 					velocity.z -= velocity.z * 10.0 * delta;
-					velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
+					velocity.y -= 1 * 100.0 * delta; // 100.0 = mass
 					direction.z = Number( moveForward ) - Number( moveBackward );
 					direction.x = Number( moveLeft ) - Number( moveRight );
 					direction.normalize(); // this ensures consistent movements in all directions
@@ -230,14 +290,23 @@
 						velocity.y = Math.max( 0, velocity.y );
 						canJump = true;
 					}
+                    //--------------------------------------------------------//
+                                     //makes lava go up//
+					floorGeometry.translate(0,Math.sin(time/10000000)*100,0);
+					//---------------------------------------------------------//
+
+
+
 					controls.getObject().translateX( velocity.x * delta );
 					controls.getObject().translateY( velocity.y * delta );
 					controls.getObject().translateZ( velocity.z * delta );
+
 					if ( controls.getObject().position.y < 10 ) {
 						velocity.y = 0;
 						controls.getObject().position.y = 10;
 						canJump = true;
-					}
+					} 
+           
 					prevTime = time;
 				}
 				renderer.render( scene, camera );
