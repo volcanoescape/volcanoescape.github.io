@@ -181,20 +181,14 @@
 					}
 				};
 				var onError = function ( xhr ) { };
-				//THREE.Loader.Handlers.add( /\.dds$/i, new THREE.DDSLoader() );
 				var mtlLoader = new THREE.MTLLoader();
-				mtlLoader.load( 'models/Stone.mtl', function( materials ) {
+				mtlLoader.load( 'models/male02.mtl', function( materials ) {
 					materials.preload();
 					var objLoader = new THREE.OBJLoader();
 					objLoader.setMaterials( materials );
-					objLoader.load( 'models/Stone.mtl', function ( object ) {
-						object.position.set( 8, 0, -14 );
-						object.rotation.y = - Math.PI * 90 / 180;
-						object.scale.set( 10, 10, 10 );
-						object.castShadow = true;
-						object.receiveShadow = true;
+					objLoader.load( 'models/male02.obj', function ( object ) {
+						object.position.y = - 95;
 						scene.add( object );
-						objects.push( object );
 					}, onProgress, onError );
 				});
 
