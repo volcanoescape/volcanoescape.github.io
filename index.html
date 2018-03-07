@@ -101,8 +101,8 @@
 			} else {
 				instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
 			}
-			function spawnRockObject(x,y,z){
-				var onProgress = function ( xhr ) {
+			var rockObject;
+			var onProgress = function ( xhr ) {
 					if ( xhr.lengthComputable ) {
 						var percentComplete = xhr.loaded / xhr.total * 100;
 						console.log( Math.round(percentComplete, 2) + '% downloaded' );
@@ -115,15 +115,20 @@
 					var objLoader = new THREE.OBJLoader();
 					objLoader.setMaterials( materials );
 					objLoader.load( 'models/Rock1.obj', function ( object ) {
-						object.position.x = x;
-						object.position.y = y;
-						object.position.z = z;
-						object.castShadow = true;
-						object.scale.set( 5, 5, 5 )
-						object.receiveShadow = true;
-						scene.add( object );
+						rockObject = object;
+						console.log(rockObject);
+
 					}, onProgress, onError );
 				});
+			console.log(rockObject);
+			function spawnRockObject(x,y,z){
+						rockObject.position.x = x;
+						rockObject.position.y = y;
+						rockObject.position.z = z;
+						rockObject.castShadow = true;
+						rockObject.scale.set( 5, 5, 5 )
+						rockObject.receiveShadow = true;
+						scene.add( rockObject );
 			}
 			init();
 			animate();
@@ -211,7 +216,7 @@
 
 				}
 
-	            var boxGeometry = new THREE.BoxGeometry( 12, 12, 12);
+	            var boxGeometry = new THREE.BoxGeometry( 15, 15, 15);
 				for ( var i = 0, l = floorGeometry.faces.length; i < l; i ++ ) {
 
 					var face = floorGeometry.faces[ i ];
