@@ -60,8 +60,8 @@
 		</div>
 
 		<script>
-
 			(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//rawgit.com/mrdoob/stats.js/master/build/stats.min.js';document.head.appendChild(script);})()
+			var rockObject;
 			var camera, scene, renderer, controls;
 			var objects = [];
 			var raycaster;
@@ -101,7 +101,7 @@
 			} else {
 				instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
 			}
-			var rockObject;
+			
 			var onProgress = function ( xhr ) {
 					if ( xhr.lengthComputable ) {
 						var percentComplete = xhr.loaded / xhr.total * 100;
