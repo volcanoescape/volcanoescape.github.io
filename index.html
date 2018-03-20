@@ -129,7 +129,6 @@
 			var canJump = false;
 			var prevTime = performance.now();
 			var velocity = new THREE.Vector3();
-			console.log(velocity);
 			var direction = new THREE.Vector3();
             var floorGeometry;
 			function init() {
@@ -146,7 +145,6 @@
 						var light = new THREE.HemisphereLight( 0xeeeeff, 0x777788, 0.75 );
 						light.position.set( 0.5, 1, 0.75 );
 						scene.add( light );
-						console.log(camera);
 						controls = new THREE.PointerLockControls( camera );
 						scene.add( controls.getObject() );
 						var onKeyDown = function ( event ) {
@@ -241,21 +239,20 @@
 							box.position.x = randomXPos;
 							box.position.y = randomYPos;
 							box.position.z = randomZPos;
-							
-							object.position.x = randomXPos;
-							object.position.y = randomYPos;
-							object.position.z = randomZPos;
-							object.castShadow = true;
-							object.scale.set( 5, 5, 5 )
-							object.receiveShadow = true;
-							object.visible = true;
-							console.log(object);
-							scene.add( object );
-
+							var object2 = object.clone();
+							object2.position.x = randomXPos;
+							object2.position.y = randomYPos;
+							object2.position.z = randomZPos;
+							object2.castShadow = true;
+							object2.scale.set( 5, 5, 5 )
+							object2.receiveShadow = true;
+							object2.visible = true;
+							scene.add( object2 );
 							scene.add( box );
 							objects.push( box );
 
 						}
+					console.log(scene);
 
 						//----------------------------------------------------------------//
 
