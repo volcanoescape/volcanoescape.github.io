@@ -131,6 +131,10 @@
 			var velocity = new THREE.Vector3();
 			var direction = new THREE.Vector3();
             var floorGeometry;
+            var wallGeometry;
+            var wallGeometry2;
+            var wallGeometry3;
+            var wallGeometry4;
 			function init() {
 				var mtlLoader = new THREE.MTLLoader();
 				mtlLoader.load( 'models/Rock1.mtl', function( materials ) {
@@ -198,6 +202,44 @@
 		                //----------------------------------------------------------------//
 		                // floor and cubes//
 		                //----------------------------------------------------------------//
+
+                wallGeometry = new THREE.PlaneGeometry( 150, 5000, 160,160 );
+
+                for ( var i = 0, l = wallGeometry.vertices.length; i < l; i ++ ) {
+					var vertex = wallGeometry.vertices[ i ];
+					vertex.x += Math.random() * 30 - 5;
+					vertex.y += Math.random() * 3 + 2450;
+					vertex.z += Math.random() * 30 + 70;
+
+				}   
+				wallGeometry2 = new THREE.PlaneGeometry( 150, 5000, 160,160 );
+                wallGeometry2.rotateY( - Math.PI / 2 );
+                for ( var i = 0, l = wallGeometry2.vertices.length; i < l; i ++ ) {
+					var vertex = wallGeometry2.vertices[ i ];
+					vertex.x += Math.random() * 30 - 95;
+					vertex.y += Math.random() * 3 + 2450;
+					vertex.z += Math.random() * 30 - 5;
+
+				}
+               wallGeometry3 = new THREE.PlaneGeometry( 150, 5000, 160,160 );
+
+                for ( var i = 0, l = wallGeometry3.vertices.length; i < l; i ++ ) {
+					var vertex = wallGeometry3.vertices[ i ];
+			        vertex.x += Math.random() * 30 - 5;
+					vertex.y += Math.random() * 3 + 2450;
+					vertex.z += Math.random() * 30 - 80;
+
+				}
+                  wallGeometry4 = new THREE.PlaneGeometry( 150, 5000, 160,160 );
+                  wallGeometry4.rotateY( - Math.PI / 2 );
+                for ( var i = 0, l = wallGeometry4.vertices.length; i < l; i ++ ) {
+					var vertex = wallGeometry4.vertices[ i ];
+				    vertex.x += Math.random() * 30 + 70;
+					vertex.y += Math.random() * 3 + 2450;
+					vertex.z += Math.random() * 30 - 5;
+
+				}
+
 		                floorGeometry = new THREE.PlaneGeometry( 130, 130, 130, 130 );
 						floorGeometry.rotateX( - Math.PI / 2 );
 
@@ -223,7 +265,12 @@
 						var CircleGeometry = new THREE.CircleGeometry( 5, 32, 5, 40);
 						var CircleMaterial = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
 						
-
+						var wallMaterial = new THREE.MeshBasicMaterial({ color: 0xD2691E,  specular: 0xFFFFFF, flatShading: true} );
+						var wall = new THREE.Mesh( wallGeometry, wallMaterial );
+						var wall2 = new THREE.Mesh( wallGeometry2, wallMaterial );
+						var wall3 = new THREE.Mesh( wallGeometry3, wallMaterial );
+						var wall4 = new THREE.Mesh( wallGeometry4, wallMaterial );
+						scene.add(wall, wall2, wall3, wall4);
 
 						// objects
 						var boxMaterial = new THREE.MeshPhongMaterial({color:0xff0000, transparent:true, opacity:0, side: THREE.DoubleSide});
