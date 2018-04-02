@@ -95,6 +95,12 @@
 				background-color: #2f2f2f;
 				border: 5px #ff1f00 solid;
       }
+      #score{
+      	position: absolute;
+	    top: 8px;
+	    right: 16px;
+	    font-size: 18px;
+      }
 		</style>
 	</head>
 	<body>
@@ -123,7 +129,9 @@
 			<p class="button button-help" id="helpBtn">Help</p>
 		</div>
 		</div>
-
+		<div id="score">
+			<p id="scoreText"></p>
+		</div>
 		<script>
 			(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//rawgit.com/mrdoob/stats.js/master/build/stats.min.js';document.head.appendChild(script);})()
 
@@ -618,6 +626,7 @@
 					} 
 					prevTime = time;
 				}
+				document.getElementById("scoreText").innerHTML = "Score: ".concat(camera.getWorldPosition().y-10);
 				renderer.render( scene, camera );
 			}
 		</script>
