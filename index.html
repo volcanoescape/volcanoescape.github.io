@@ -20,26 +20,81 @@
 				width: 100%;
 				height: 100%;
 				background-color: rgba(0,0,0,0.5);
+				cursor: default;
 			}
-			#instructions {
-				width: 100%;
-				height: 100%;
-				display: -webkit-box;
-				display: -moz-box;
-				display: box;
-				-webkit-box-orient: horizontal;
-				-moz-box-orient: horizontal;
-				box-orient: horizontal;
-				-webkit-box-pack: center;
-				-moz-box-pack: center;
-				box-pack: center;
-				-webkit-box-align: center;
-				-moz-box-align: center;
-				box-align: center;
-				color: #ffffff;
-				text-align: center;
+			#pauseScreen, #menuScreen,  #instructions {
+				position: absolute; 
+				top: 50%;
+				transform: translateY(-50%);
+				text-align: center; 
+				width: 100%; 
+			}
+			#pauseScreen, #instructions {
+				display: none;
+			}
+		 #buttons{
+		   bottom:100px;
+		}
+			.button {
+				width: 30%; 
+				color: #ff1f00; 
+				padding: 5px; 
+				font-size: 30px; 
+				margin: 0 auto; 
 				cursor: pointer;
+				margin-top: 10px;
 			}
+			.button-play {
+				background-color: #2f2f2f;
+				border: 5px #ff1f00 solid;
+			}
+			.button-leaderboard {
+				background-color: #2f2f2f;
+				border: 5px #ff1f00 solid;
+			}
+			.button-help {
+				background-color: #2f2f2f;
+				border: 5px #ff1f00 solid;
+			}
+            .button-continue{
+            	background-color: #2f2f2f;
+				border: 5px #ff1f00 solid;
+            }
+            .button-quit{
+            	background-color: #2f2f2f;
+				border: 5px #ff1f00 solid;
+            }
+			img {
+                    padding:-100px;
+                     max-width: 100%;
+                     height: auto;	
+                     display: block;
+                     margin-left: auto;
+                     margin-right: auto;  
+                     width: 80%;
+               }
+        .keyboard-instructions{
+         	background-color: #2f2f2f;
+				border: 5px #ff1f00 solid;
+				width: 30%; 
+				color: #ff1f00; 
+				padding: 5px; 
+				font-size: 30px; 
+				margin: 0 auto; 
+				cursor: pointer;
+				margin-top: 10px;
+         }
+      #backBtn{
+      	width: 30%; 
+				color: #ff1f00; 
+				padding: 5px; 
+				font-size: 30px; 
+				margin: 0 auto; 
+				cursor: pointer;
+				margin-top: 10px;
+				background-color: #2f2f2f;
+				border: 5px #ff1f00 solid;
+      }
 		</style>
 	</head>
 	<body>
@@ -49,24 +104,116 @@
 		<script src="js/loaders/MTLLoader.js"></script>
 		<script src="js/loaders/OBJLoader.js"></script>
 
-		<div id="blocker">
+		<div id="blocker"></div>
 
-			<div id="instructions">
-				<span style="font-size:40px">Click to play</span>
-				<br />
-				(W, A, S, D = Move, SPACE = Jump, MOUSE = Look around)
-			</div>
-
+		<div id="instructions">
+			
+			<p class="keyboard-instructions"> (W, A, S, D = Move, SPACE = Jump, MOUSE = Look around)</p>
+			<p class="button button-blue" id="backBtn">« Back</p>
+		</div>
+		<div id="pauseScreen">
+			<p class="button button-continue" id="continueBtn">Continue</p>
+			<p class="button button-quit" id="quitBtn">Quit</p>
+		</div>
+		<div id="menuScreen">
+			<img src="images/volcanoescape3.png" alt="volcano" height="700">  
+            <div id="buttons">
+			<p class="button button-play" id="playBtn">Play</p>		
+			<p class="button button-leaderboard" id="leaderboardBtn">Leaderboard</p>
+			<p class="button button-help" id="helpBtn">Help</p>
+		</div>
 		</div>
 
 		<script>
 			(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//rawgit.com/mrdoob/stats.js/master/build/stats.min.js';document.head.appendChild(script);})()
+
+			var audio, playbtn, music, pausebtn;
 			var rockObject;
 			var camera, scene, renderer, controls;
 			var objects = [];
+			var objects2 = [];
+			var objects3 = [];
+			var boundBoxes = [];
 			var raycaster;
 			var blocker = document.getElementById( 'blocker' );
 			var instructions = document.getElementById( 'instructions' );
+
+            var menuScreen = document.getElementById("menuScreen");
+			var pauseScreen = document.getElementById("pauseScreen");
+
+			var defPointerLockElement = document.body; 
+			var defPointerUnlockElement = document; 
+
+			defPointerLockElement.requestPointerLock = defPointerLockElement.requestPointerLock || 
+					defPointerLockElement.mozRequestPointerLock || 
+					defPointerLockElement.webkitRequestPointerLock;
+
+			
+			defPointerUnlockElement.exitPointerLock = defPointerUnlockElement.exitPointerLock ||
+					defPointerUnlockElement.mozExitPointerLock ||
+					defPointerUnlockElement.webkitExitPointerLock;
+
+			function mainMenuMusic(){
+			music = new Audio();
+			music.src = "audio/menuMusic.mp3";
+			music.loop = true;
+			music.play();
+			}
+			window.addEventListener("load", mainMenuMusic);
+		
+			function initAudioPlayer(){
+			music.muted=true;
+			audio = new Audio();
+			audio.src = "audio/gameplayMusic.mp3";
+			audio.loop = true;
+			audio.play();
+			}
+
+			function switchTrack(){
+			audio.muted=true;
+			music.muted=false;
+			}
+            playbtn = document.getElementById("playBtn");
+			playbtn.addEventListener("click", initAudioPlayer);
+			quitbtn = document.getElementById("quitBtn");
+			quitbtn.addEventListener("click", switchTrack);
+
+            document.addEventListener("click", (e) => {
+				
+				switch (e.target.id) {
+					//#region menuScreen
+					case "playBtn":
+						
+						defPointerLockElement.requestPointerLock();
+						menuScreen.style.display = "none";
+						break;
+					case "leaderboardBtn":
+						alert("implement me Yiannis!");
+						break;
+					case "helpBtn":
+						
+						instructions.style.display = "block";
+						menuScreen.style.display = "none";
+						break;
+					case "backBtn":
+						
+						instructions.style.display = "none";
+						menuScreen.style.display = "block";
+						break;
+					
+
+					case "continueBtn":
+						
+						defPointerLockElement.requestPointerLock();
+						break;
+					case "quitBtn":
+						defPointerUnlockElement.exitPointerLock();
+						menuScreen.style.display = "block";
+						blocker.style.display = "block";
+						pauseScreen.style.display = "none";		
+				}
+			});
+
 			// http://www.html5rocks.com/en/tutorials/pointerlock/intro/
 			var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
 			if ( havePointerLock ) {
@@ -76,10 +223,12 @@
 						controlsEnabled = true;
 						controls.enabled = true;
 						blocker.style.display = 'none';
+						pauseScreen.style.display = 'none';
 					} else {
 						controls.enabled = false;
 						blocker.style.display = 'block';
 						instructions.style.display = '';
+						pauseScreen.style.display = 'block';
 					}
 				};
 				var pointerlockerror = function ( event ) {
@@ -119,6 +268,9 @@
 				rockObject.receiveShadow = true;
 				scene.add( rockObject );
 			}
+
+		
+			
 			init();
 			
 			var controlsEnabled = false;
@@ -131,6 +283,7 @@
 			var velocity = new THREE.Vector3();
 			var direction = new THREE.Vector3();
             var floorGeometry;
+            var floorGeometry2;
             var wallGeometry;
             var wallGeometry2;
             var wallGeometry3;
@@ -142,11 +295,11 @@
 					var objLoader = new THREE.OBJLoader();
 					objLoader.setMaterials( materials );
 					objLoader.load( 'models/Rock1.obj', function ( object ) {
-						camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
+						camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 350 );
 						scene = new THREE.Scene();
-						scene.background = new THREE.Color( 0xffffff );
-						scene.fog = new THREE.Fog( 0xffffff, 0, 750 );
-						var light = new THREE.HemisphereLight( 0xeeeeff, 0x777788, 0.75 );
+						scene.background = new THREE.Color( 0x660000 );
+						scene.fog = new THREE.Fog( 0x800000, 0, 200 );
+						var light = new THREE.HemisphereLight( 0xeeeeff, 0x53535f, 0.75 );
 						light.position.set( 0.5, 1, 0.75 );
 						scene.add( light );
 						controls = new THREE.PointerLockControls( camera );
@@ -169,7 +322,7 @@
 									moveRight = true;
 									break;
 								case 32: // space
-									if ( canJump === true ) velocity.y += 350;
+									if ( canJump === true ) velocity.y += 90;
 									canJump = false;
 									break;
 							}
@@ -203,68 +356,93 @@
 		                // floor and cubes//
 		                //----------------------------------------------------------------//
 
-                wallGeometry = new THREE.PlaneGeometry( 150, 5000, 160,160 );
+                wallGeometry = new THREE.PlaneGeometry( 300, 10000, 360,160 );
 
                 for ( var i = 0, l = wallGeometry.vertices.length; i < l; i ++ ) {
 					var vertex = wallGeometry.vertices[ i ];
 					vertex.x += Math.random() * 30 - 5;
-					vertex.y += Math.random() * 3 + 2450;
+					vertex.y += Math.random() * 3 + 5000;
 					vertex.z += Math.random() * 30 + 70;
 
 				}   
-				wallGeometry2 = new THREE.PlaneGeometry( 150, 5000, 160,160 );
+				wallGeometry2 = new THREE.PlaneGeometry( 300, 10000, 360,160 );
                 wallGeometry2.rotateY( - Math.PI / 2 );
                 for ( var i = 0, l = wallGeometry2.vertices.length; i < l; i ++ ) {
 					var vertex = wallGeometry2.vertices[ i ];
 					vertex.x += Math.random() * 30 - 95;
-					vertex.y += Math.random() * 3 + 2450;
+					vertex.y += Math.random() * 3 + 5000;
 					vertex.z += Math.random() * 30 - 5;
 
 				}
-               wallGeometry3 = new THREE.PlaneGeometry( 150, 5000, 160,160 );
+               wallGeometry3 = new THREE.PlaneGeometry( 300, 10000, 360,160 );
 
                 for ( var i = 0, l = wallGeometry3.vertices.length; i < l; i ++ ) {
 					var vertex = wallGeometry3.vertices[ i ];
 			        vertex.x += Math.random() * 30 - 5;
-					vertex.y += Math.random() * 3 + 2450;
+					vertex.y += Math.random() * 3 + 5000;
 					vertex.z += Math.random() * 30 - 80;
 
 				}
-                  wallGeometry4 = new THREE.PlaneGeometry( 150, 5000, 160,160 );
+                  wallGeometry4 = new THREE.PlaneGeometry( 300, 10000, 360,160 );
                   wallGeometry4.rotateY( - Math.PI / 2 );
                 for ( var i = 0, l = wallGeometry4.vertices.length; i < l; i ++ ) {
 					var vertex = wallGeometry4.vertices[ i ];
 				    vertex.x += Math.random() * 30 + 70;
-					vertex.y += Math.random() * 3 + 2450;
+					vertex.y += Math.random() * 3 + 5000;
 					vertex.z += Math.random() * 30 - 5;
 
 				}
 
-		                floorGeometry = new THREE.PlaneGeometry( 130, 130, 130, 130 );
-						floorGeometry.rotateX( - Math.PI / 2 );
+		        floorGeometry = new THREE.PlaneGeometry( 200, 200, 70, 70 );
+				floorGeometry.rotateX( - Math.PI / 2 );
 
-						for ( var i = 0, l = floorGeometry.vertices.length; i < l; i ++ ) {
+				for ( var i = 0, l = floorGeometry.vertices.length; i < l; i ++ ) {
 
-							var vertex = floorGeometry.vertices[ i ];
-							vertex.x += Math.random() * 15 - 10;
-							vertex.y += Math.random() * 2;
-							vertex.z += Math.random() * 15 - 10;
+				var vertex = floorGeometry.vertices[ i ];
+				vertex.x += Math.random() * 15 - 10;
+				vertex.y += Math.random() * 5;
+				vertex.z += Math.random() * 15 - 10;
+			   }
+
+			   for ( var i = 0, l = floorGeometry.faces.length; i < l; i ++ ) {
+						var face4 = floorGeometry.faces[ i ];
+						face4.vertexColors[ 0 ] = new THREE.Color(0xD2691E);
+						face4.vertexColors[ 1 ] = new THREE.Color(0xE60000);
+						face4.vertexColors[ 2 ] = new THREE.Color(0x661400);
+					}
+
+			    floorGeometry2 = new THREE.PlaneGeometry( 200, 200, 30, 30 );
+				floorGeometry2.rotateX( - Math.PI / 2 );
+
+				for ( var i = 0, l = floorGeometry2.vertices.length; i < l; i ++ ) {
+
+				var vertex2 = floorGeometry2.vertices[ i ];
+				vertex2.x += Math.random() * 15 - 10;
+				vertex2.y += Math.random() * 1;
+				vertex2.z += Math.random() * 15 - 10;
+			   }
+
+			   for ( var i = 0, l = floorGeometry2.faces.length; i < l; i ++ ) {
+						var face5 = floorGeometry2.faces[ i ];
+						face5.vertexColors[ 0 ] = new THREE.Color(0x615D5A);
+						face5.vertexColors[ 1 ] = new THREE.Color(0x803E00);
+						face5.vertexColors[ 2 ] = new THREE.Color(0x000000);
+					}
 
 
-						}
-
-			            var boxGeometry = new THREE.BoxGeometry( 15, 15, 15);
-						for ( var i = 0, l = floorGeometry.faces.length; i < l; i ++ ) {
-
-							var face = floorGeometry.faces[ i ];
-
-
-						}
-
-
-						var CircleGeometry = new THREE.CircleGeometry( 5, 32, 5, 40);
-						var CircleMaterial = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
-						
+				 var boxGeometry = new THREE.BoxGeometry( 12, 1, 12);
+				for ( var i = 0, l = floorGeometry.faces.length; i < l; i ++ ) {
+				var face1 = floorGeometry.faces[ i ];
+				}
+				 var boxGeometry2 = new THREE.BoxGeometry( 23, 1, 23);
+				for ( var i = 0, l = floorGeometry.faces.length; i < l; i ++ ) {
+				var face2 = floorGeometry.faces[ i ];
+				}
+				var boxGeometry3 = new THREE.BoxGeometry( 16, 1, 16);
+				for ( var i = 0, l = floorGeometry.faces.length; i < l; i ++ ) {
+				var face3 = floorGeometry.faces[ i ];
+				}
+		
 						var wallMaterial = new THREE.MeshBasicMaterial({ color: 0xD2691E,  specular: 0xFFFFFF, flatShading: true} );
 						var wall = new THREE.Mesh( wallGeometry, wallMaterial );
 						var wall2 = new THREE.Mesh( wallGeometry2, wallMaterial );
@@ -274,9 +452,7 @@
 
 						// objects
 						var boxMaterial = new THREE.MeshPhongMaterial({color:0xff0000, transparent:true, opacity:0, side: THREE.DoubleSide});
-						for ( var i = 0; i < 1200; i ++ ) {
-
-							
+						for ( var i = 0; i < 600; i ++ ) {
 							//boxMaterial.color.setHSL( Math.random() * 0.2 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
 
 							var box = new THREE.Mesh( boxGeometry, boxMaterial );
@@ -288,28 +464,93 @@
 							box.position.z = randomZPos;
 							var object2 = object.clone();
 							object2.position.x = randomXPos;
-							object2.position.y = randomYPos;
+							object2.position.y = randomYPos-6;
 							object2.position.z = randomZPos;
 							object2.castShadow = true;
-							object2.scale.set( 5, 5, 5 )
+							object2.scale.set( 4, 4, 4 )
 							object2.receiveShadow = true;
 							object2.visible = true;
 							scene.add( object2 );
 							scene.add( box );
 							objects.push( box );
-
 						}
-					
+					      
+	                    var boxMaterial2 = new THREE.MeshPhongMaterial({color:0xff0000, transparent:true, opacity:0, side: THREE.DoubleSide});
+						for ( var i = 0; i < 1400; i ++ ) {
 
+							var box2 = new THREE.Mesh( boxGeometry2, boxMaterial2 );
+							var randomXPos = Math.floor( Math.random() * 20 - 10 ) * 7;
+							var randomYPos = Math.floor( Math.random() * 600 ) * 20 + 10;
+							var randomZPos = Math.floor( Math.random() * 20 - 10 ) * 7;
+							box2.position.x = randomXPos;
+							box2.position.y = randomYPos;
+							box2.position.z = randomZPos;
+							var object3 = object.clone();
+							object3.position.x = randomXPos;
+							object3.position.y = randomYPos-12;
+							object3.position.z = randomZPos;
+							object3.castShadow = true;
+							object3.scale.set( 8, 8, 8 )
+							object3.receiveShadow = true;
+							object3.visible = true;
+							scene.add( object3 );
+							scene.add( box2 );
+							objects2.push( box2 );
+						}
+
+						var boxMaterial3 = new THREE.MeshPhongMaterial({color:0xff0000, transparent:true, opacity:0, side: THREE.DoubleSide});
+						for ( var i = 0; i < 400; i ++ ) {
+							//boxMaterial.color.setHSL( Math.random() * 0.2 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
+
+							var box3 = new THREE.Mesh( boxGeometry3, boxMaterial3 );
+							var randomXPos = Math.floor( Math.random() * 20 - 10 ) * 7;
+							var randomYPos = Math.floor( Math.random() * 600 ) * 20 + 10;
+							var randomZPos = Math.floor( Math.random() * 20 - 10 ) * 7;
+							box3.position.x = randomXPos;
+							box3.position.y = randomYPos;
+							box3.position.z = randomZPos;
+							var object4 = object.clone();
+							object4.position.x = randomXPos;
+							object4.position.y = randomYPos-8;
+							object4.position.z = randomZPos;
+							object4.castShadow = true;
+							object4.scale.set( 6, 6, 6 )
+							object4.receiveShadow = true;
+							object4.visible = true;
+							scene.add( object4 );
+							scene.add( box3 );
+							objects3.push( box3 );
+						}
 						//----------------------------------------------------------------//
+						//****** Why the fuck can I still walk through that cube?   ******//
+
+						var boundBox1G = new THREE.BoxGeometry( 23, 23, 23);
+						var boundBox1M = new THREE.MeshPhongMaterial({color:0xff0000, side: THREE.DoubleSide});
+						var boundBox1 = new THREE.Mesh( boundBox1G, boundBox1M );
+						boundBox1.position.x = 10;
+						boundBox1.position.y = 10;
+						boundBox1.position.z = 10;
+						scene.add( boundBox1 );
+						boundBoxes.push( boundBox1 );
+
+						// some tests
+						/*var boundBox1 = new THREE.Box3().setFromObject(wall);
+						var boundBox2 = new THREE.Box3().setFromObject(wall2);
+						var boundBox3 = new THREE.Box3().setFromObject(wall3);
+						var boundBox4 = new THREE.Box3().setFromObject(wall4);
+						scene.add( boundBox1 );
+						scene.add( boundBox2 );
+						scene.add( boundBox3 );
+						scene.add( boundBox4 );*/
 
 						raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
+						
 						// floor
-
-
-						var floorMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000} );
+						var floorMaterial = new THREE.MeshBasicMaterial({ vertexColors: THREE.VertexColors} );
 						var floor = new THREE.Mesh( floorGeometry, floorMaterial );
-						scene.add( floor );
+						var floorMaterial2 = new THREE.MeshBasicMaterial({ vertexColors: THREE.VertexColors} );
+						var floor2 = new THREE.Mesh( floorGeometry2, floorMaterial2 );
+						scene.add( floor, floor2 );
 						//
 						renderer = new THREE.WebGLRenderer();
 						renderer.setPixelRatio( window.devicePixelRatio );
@@ -322,9 +563,6 @@
 					}, onProgress, onError );
 				});
 
-				
-
-				 
 			}
 			function onWindowResize() {
 				camera.aspect = window.innerWidth / window.innerHeight;
@@ -336,30 +574,39 @@
 				if ( controlsEnabled === true ) {
 					raycaster.ray.origin.copy( controls.getObject().position );
 					raycaster.ray.origin.y -= 10;
-					var intersections = raycaster.intersectObjects( objects );
+					var intersections = raycaster.intersectObjects( objects);
+					var intersections2 = raycaster.intersectObjects( objects2);
+					var intersections3 = raycaster.intersectObjects( objects3);
+					var intersections4 = raycaster.intersectObjects( boundBoxes);
 					var onObject = intersections.length > 0;
+					var onObject2 = intersections2.length > 0;
+					var onObject3 = intersections3.length > 0;
 					var time = performance.now();
 					var delta = ( time - prevTime ) / 1000;
-
  					velocity.x -= velocity.x * 10.0 * delta;
 					velocity.z -= velocity.z * 10.0 * delta;
-					velocity.y -= 1 * 100.0 * delta; // 100.0 = mass
+					velocity.y -= 2 * 100.0 * delta; // 100.0 = mass
 					direction.z = Number( moveForward ) - Number( moveBackward );
 					direction.x = Number( moveLeft ) - Number( moveRight );
 					direction.normalize(); // this ensures consistent movements in all directions
 					if ( moveForward || moveBackward ) velocity.z -= direction.z * 400.0 * delta;
 					if ( moveLeft || moveRight ) velocity.x -= direction.x * 400.0 * delta;
 					if ( onObject === true ) {
+						velocity.y = 400
+						canJump = false;
+					}
+					if ( onObject2 === true ) {
 						velocity.y = Math.max( 0, velocity.y );
 						canJump = true;
 					}
+					if ( onObject3 === true ) {
+						velocity.y = Math.max(-7, velocity.y);
+						canJump = false;
+					}
                     //--------------------------------------------------------//
                                      //makes lava go up//
-					floorGeometry.translate(0,Math.sin(time/10000000)*100,0);
+					floorGeometry.translate(0,0.1,0);
 					//---------------------------------------------------------//
-
-
-
 					controls.getObject().translateX( velocity.x * delta );
 					controls.getObject().translateY( velocity.y * delta );
 					controls.getObject().translateZ( velocity.z * delta );
@@ -369,7 +616,6 @@
 						controls.getObject().position.y = 10;
 						canJump = true;
 					} 
-           
 					prevTime = time;
 				}
 				renderer.render( scene, camera );
