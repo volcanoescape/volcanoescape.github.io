@@ -99,7 +99,7 @@
       	position: absolute;
 	    top: 8px;
 	    right: 16px;
-	    font-size: 18px;
+	    font-size: 35px;
       }
 		</style>
 	</head>
@@ -135,6 +135,7 @@
 		<script>
 			(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//rawgit.com/mrdoob/stats.js/master/build/stats.min.js';document.head.appendChild(script);})()
 
+			var box9, box8, box7, box10;
 			var audio, playbtn, music, pausebtn;
 			var rockObject;
 			var camera, scene, renderer, controls;
@@ -363,16 +364,17 @@
 		                //----------------------------------------------------------------//
 		                // floor and cubes//
 		                //----------------------------------------------------------------//
-
+                
                 wallGeometry = new THREE.PlaneGeometry( 300, 10000, 360,160 );
 
                 for ( var i = 0, l = wallGeometry.vertices.length; i < l; i ++ ) {
 					var vertex = wallGeometry.vertices[ i ];
 					vertex.x += Math.random() * 30 - 5;
 					vertex.y += Math.random() * 3 + 5000;
-					vertex.z += Math.random() * 30 + 70;
-
+					vertex.z += Math.random() * 30 + 70;               
 				}   
+			
+
 				wallGeometry2 = new THREE.PlaneGeometry( 300, 10000, 360,160 );
                 wallGeometry2.rotateY( - Math.PI / 2 );
                 for ( var i = 0, l = wallGeometry2.vertices.length; i < l; i ++ ) {
@@ -529,10 +531,25 @@
 							scene.add( box3 );
 							objects3.push( box3 );
 						}
+
+
+
+                        box10 = new THREE.BoxHelper( wall, 0xffff00 );
+                        box10.update(wall);
+                        scene.add( box10 );
+                        box9 = new THREE.BoxHelper( wall2, 0xffff00 );
+                        box9.update(wall2);
+                        scene.add( box9 );
+                        box8 = new THREE.BoxHelper( wall3, 0xffff00 );
+                        box8.update(wall3);
+                        scene.add( box8 );
+                        box7 = new THREE.BoxHelper( wall4, 0xffff00 );
+                         box7.update(wall4);
+                        scene.add( box10, box9, box8, box7 );
 						//----------------------------------------------------------------//
 						//****** Why the fuck can I still walk through that cube?   ******//
 
-						var boundBox1G = new THREE.BoxGeometry( 23, 23, 23);
+						/*var boundBox1G = new THREE.BoxGeometry( 23, 23, 23);
 						var boundBox1M = new THREE.MeshPhongMaterial({color:0xff0000, side: THREE.DoubleSide});
 						var boundBox1 = new THREE.Mesh( boundBox1G, boundBox1M );
 						boundBox1.position.x = 10;
@@ -540,7 +557,7 @@
 						boundBox1.position.z = 10;
 						scene.add( boundBox1 );
 						boundBoxes.push( boundBox1 );
-
+                        */
 						// some tests
 						/*var boundBox1 = new THREE.Box3().setFromObject(wall);
 						var boundBox2 = new THREE.Box3().setFromObject(wall2);
@@ -551,7 +568,8 @@
 						scene.add( boundBox3 );
 						scene.add( boundBox4 );*/
 
-						raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
+						raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, 1, 0 ), 0, 10 );
+						raycasterWall = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, 1, 0 ), 0, 0 );
 						
 						// floor
 						var floorMaterial = new THREE.MeshBasicMaterial({ vertexColors: THREE.VertexColors} );
@@ -582,25 +600,34 @@
 				if ( controlsEnabled === true ) {
 					raycaster.ray.origin.copy( controls.getObject().position );
 					raycaster.ray.origin.y -= 10;
+					raycasterWall.ray.origin.copy( controls.getObject().position );
+					raycasterWall.ray.origin.y -= 10;
 					var intersections = raycaster.intersectObjects( objects);
 					var intersections2 = raycaster.intersectObjects( objects2);
 					var intersections3 = raycaster.intersectObjects( objects3);
-					var intersections4 = raycaster.intersectObjects( boundBoxes);
+					var intersections4 = raycasterWall.intersectObject( box10);
+					var intersections5 = raycasterWall.intersectObject( box9);
+					var intersections6 = raycasterWall.intersectObject( box8);
+					var intersections7 = raycasterWall.intersectObject( box7);
 					var onObject = intersections.length > 0;
 					var onObject2 = intersections2.length > 0;
 					var onObject3 = intersections3.length > 0;
+					var onObject4 = intersections4.length > 0;
+					var onObject5 = intersections5.length > 0;
+					var onObject6 = intersections6.length > 0;
+					var onObject7 = intersections7.length > 0;
 					var time = performance.now();
 					var delta = ( time - prevTime ) / 1000;
  					velocity.x -= velocity.x * 10.0 * delta;
 					velocity.z -= velocity.z * 10.0 * delta;
-					velocity.y -= 2 * 100.0 * delta; // 100.0 = mass
+					velocity.y -= 1 * 100.0 * delta; // 100.0 = mass
 					direction.z = Number( moveForward ) - Number( moveBackward );
 					direction.x = Number( moveLeft ) - Number( moveRight );
 					direction.normalize(); // this ensures consistent movements in all directions
 					if ( moveForward || moveBackward ) velocity.z -= direction.z * 400.0 * delta;
 					if ( moveLeft || moveRight ) velocity.x -= direction.x * 400.0 * delta;
 					if ( onObject === true ) {
-						velocity.y = 400
+						velocity.y = 400;
 						canJump = false;
 					}
 					if ( onObject2 === true ) {
@@ -610,6 +637,50 @@
 					if ( onObject3 === true ) {
 						velocity.y = Math.max(-7, velocity.y);
 						canJump = false;
+					}
+					if ( onObject4 === true ) {
+					   if (moveForward == true){
+					   velocity.z = 200;
+					}if (moveBackward == true){
+					   velocity.z = -200;
+					}if (moveRight == true){
+					   velocity.x = -200;
+					}if (moveLeft == true){
+					   velocity.x = 200;
+					}
+					}
+					if ( onObject5 === true ) {
+					   if (moveForward == true){
+					   velocity.z = 200;
+					}if (moveBackward == true){
+					   velocity.z = -200;
+					}if (moveRight == true){
+					   velocity.x = -200;
+					}if (moveLeft == true){
+					   velocity.x = 200;
+					}
+					}
+					if ( onObject6 === true ) {
+					   if (moveForward == true){
+					   velocity.z = 200;
+					}if (moveBackward == true){
+					   velocity.z = -200;
+					}if (moveRight == true){
+					   velocity.x = -200;
+					}if (moveLeft == true){
+					   velocity.x = 200;
+					}
+					}
+					if ( onObject7 === true ) {
+					   if (moveForward == true){
+					   velocity.z = 200;
+					}if (moveBackward == true){
+					   velocity.z = -200;
+					}if (moveRight == true){
+					   velocity.x = -200;
+					}if (moveLeft == true){
+					   velocity.x = 200;
+					}
 					}
                     //--------------------------------------------------------//
                                      //makes lava go up//
