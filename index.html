@@ -628,9 +628,9 @@
 					direction.x = Number( moveLeft ) - Number( moveRight );
 					direction.normalize(); // this ensures consistent movements in all directions
 					if (gamePause){
-					velocity.x -= 0;
-					velocity.z -= 0;
-					velocity.y -= 0;
+					velocity.x = 0;
+					velocity.z = 0;
+					velocity.y = 0;
 					}
 					else{
 						if ( moveForward || moveBackward ) velocity.z -= direction.z * 400.0 * delta;
