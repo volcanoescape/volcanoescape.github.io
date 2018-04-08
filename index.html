@@ -577,6 +577,7 @@
 						var floor = new THREE.Mesh( floorGeometry, floorMaterial );
 						var floorMaterial2 = new THREE.MeshBasicMaterial({ vertexColors: THREE.VertexColors} );
 						floor2 = new THREE.Mesh( floorGeometry2, floorMaterial2 );
+						floor.translateY(-50);
 						scene.add( floor, floor2 );
 						//
 						renderer = new THREE.WebGLRenderer();
