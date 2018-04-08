@@ -608,8 +608,8 @@
 					direction.x = Number( moveLeft ) - Number( moveRight );
 					direction.normalize(); // this ensures consistent movements in all directions
 					if (gamePause){
-						instructions.style.display = "block";
-						menuScreen.style.display = "none";	
+						instructions.style.display = "none";
+						menuScreen.style.display = "block";	
 					}
 					else{
 						if ( moveForward || moveBackward ) velocity.z -= direction.z * 400.0 * delta;
