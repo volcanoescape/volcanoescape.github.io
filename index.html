@@ -216,7 +216,7 @@
 						defPointerLockElement.requestPointerLock();
 						break;
 					case "quitBtn":
-					 	indow.location.reload();
+					 	window.location.reload();
 						defPointerUnlockElement.exitPointerLock();
 						menuScreen.style.display = "block";
 						blocker.style.display = "block";
@@ -590,7 +590,7 @@
 					var intersections5 = raycasterWall.intersectObject( box9);
 					var intersections6 = raycasterWall.intersectObject( box8);
 					var intersections7 = raycasterWall.intersectObject( box7);
-					var intersections8 = raycasterWall.intersectObject(floor2);
+					var intersections8 = raycasterWall.intersectObject(floor);
 					var onObject = intersections.length > 0;
 					var onObject2 = intersections2.length > 0;
 					var onObject3 = intersections3.length > 0;
@@ -609,8 +609,7 @@
 					direction.normalize(); // this ensures consistent movements in all directions
 					if (gamePause){
 						defPointerUnlockElement.exitPointerLock();
-						instructions.style.display = "block";
-						menuScreen.style.display = "none";
+
 					}
 					else{
 						if ( moveForward || moveBackward ) velocity.z -= direction.z * 400.0 * delta;
