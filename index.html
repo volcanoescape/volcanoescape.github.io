@@ -193,7 +193,6 @@
 				switch (e.target.id) {
 					//#region menuScreen
 					case "playBtn":
-						init();
 						defPointerLockElement.requestPointerLock();
 						menuScreen.style.display = "none";
 						break;
@@ -217,10 +216,11 @@
 						defPointerLockElement.requestPointerLock();
 						break;
 					case "quitBtn":
+					 	location.reload(); 
 						defPointerUnlockElement.exitPointerLock();
 						menuScreen.style.display = "block";
 						blocker.style.display = "block";
-						pauseScreen.style.display = "none";		
+						pauseScreen.style.display = "none";
 				}
 			});
 
@@ -545,29 +545,8 @@
                         box8.update(wall3);
                         scene.add( box8 );
                         box7 = new THREE.BoxHelper( wall4, 0xffff00 );
-                         box7.update(wall4);
+                        box7.update(wall4);
                         scene.add( box10, box9, box8, box7 );
-						//----------------------------------------------------------------//
-						//****** Why the fuck can I still walk through that cube?   ******//
-
-						/*var boundBox1G = new THREE.BoxGeometry( 23, 23, 23);
-						var boundBox1M = new THREE.MeshPhongMaterial({color:0xff0000, side: THREE.DoubleSide});
-						var boundBox1 = new THREE.Mesh( boundBox1G, boundBox1M );
-						boundBox1.position.x = 10;
-						boundBox1.position.y = 10;
-						boundBox1.position.z = 10;
-						scene.add( boundBox1 );
-						boundBoxes.push( boundBox1 );
-                        */
-						// some tests
-						/*var boundBox1 = new THREE.Box3().setFromObject(wall);
-						var boundBox2 = new THREE.Box3().setFromObject(wall2);
-						var boundBox3 = new THREE.Box3().setFromObject(wall3);
-						var boundBox4 = new THREE.Box3().setFromObject(wall4);
-						scene.add( boundBox1 );
-						scene.add( boundBox2 );
-						scene.add( boundBox3 );
-						scene.add( boundBox4 );*/
 
 						raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, 1, 0 ), 0, 10 );
 						raycasterWall = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, 1, 0 ), 0, 0 );
@@ -629,10 +608,8 @@
 					direction.x = Number( moveLeft ) - Number( moveRight );
 					direction.normalize(); // this ensures consistent movements in all directions
 					if (gamePause){
-						defPointerUnlockElement.exitPointerLock();
-						menuScreen.style.display = "block";
-						blocker.style.display = "block";
-						pauseScreen.style.display = "none";	
+						instructions.style.display = "block";
+						menuScreen.style.display = "none";	
 					}
 					else{
 						if ( moveForward || moveBackward ) velocity.z -= direction.z * 400.0 * delta;
