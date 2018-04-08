@@ -216,7 +216,7 @@
 						defPointerLockElement.requestPointerLock();
 						break;
 					case "quitBtn":
-					 	location.reload(); 
+					 	window.location.reload( false ); 
 						defPointerUnlockElement.exitPointerLock();
 						menuScreen.style.display = "block";
 						blocker.style.display = "block";
