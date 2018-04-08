@@ -135,7 +135,7 @@
 		<script>
 			(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//rawgit.com/mrdoob/stats.js/master/build/stats.min.js';document.head.appendChild(script);})()
 
-			var box9, box8, box7, box10, floor2;
+			var box9, box8, box7, box10, floor, floor2;
 			var audio, playbtn, music, pausebtn;
 			var rockObject;
 			var camera, scene, renderer, controls;
@@ -216,7 +216,7 @@
 						defPointerLockElement.requestPointerLock();
 						break;
 					case "quitBtn":
-					 	window.location.reload( false ); 
+					 	indow.location.reload();
 						defPointerUnlockElement.exitPointerLock();
 						menuScreen.style.display = "block";
 						blocker.style.display = "block";
@@ -553,7 +553,7 @@
 						
 						// floor
 						var floorMaterial = new THREE.MeshBasicMaterial({ vertexColors: THREE.VertexColors} );
-						var floor = new THREE.Mesh( floorGeometry, floorMaterial );
+						floor = new THREE.Mesh( floorGeometry, floorMaterial );
 						var floorMaterial2 = new THREE.MeshBasicMaterial({ vertexColors: THREE.VertexColors} );
 						floor2 = new THREE.Mesh( floorGeometry2, floorMaterial2 );
 						floor.translateY(-50);
@@ -584,13 +584,13 @@
 					raycasterWall.ray.origin.copy( controls.getObject().position );
 					raycasterWall.ray.origin.y -= 10;
 					var intersections = raycaster.intersectObjects( objects);
-						var intersections2 = raycaster.intersectObjects( objects2);
+					var intersections2 = raycaster.intersectObjects( objects2);
 					var intersections3 = raycaster.intersectObjects( objects3);
 					var intersections4 = raycasterWall.intersectObject( box10);
 					var intersections5 = raycasterWall.intersectObject( box9);
 					var intersections6 = raycasterWall.intersectObject( box8);
 					var intersections7 = raycasterWall.intersectObject( box7);
-					var intersections8 = raycasterWall.intersectObject( floor2);
+					var intersections8 = raycasterWall.intersectObject(floor2);
 					var onObject = intersections.length > 0;
 					var onObject2 = intersections2.length > 0;
 					var onObject3 = intersections3.length > 0;
@@ -608,8 +608,9 @@
 					direction.x = Number( moveLeft ) - Number( moveRight );
 					direction.normalize(); // this ensures consistent movements in all directions
 					if (gamePause){
-						instructions.style.display = "none";
-						menuScreen.style.display = "block";	
+						defPointerUnlockElement.exitPointerLock();
+						instructions.style.display = "block";
+						menuScreen.style.display = "none";
 					}
 					else{
 						if ( moveForward || moveBackward ) velocity.z -= direction.z * 400.0 * delta;
