@@ -193,7 +193,7 @@
 				switch (e.target.id) {
 					//#region menuScreen
 					case "playBtn":
-						
+						init();
 						defPointerLockElement.requestPointerLock();
 						menuScreen.style.display = "none";
 						break;
@@ -628,9 +628,10 @@
 					direction.x = Number( moveLeft ) - Number( moveRight );
 					direction.normalize(); // this ensures consistent movements in all directions
 					if (gamePause){
-					velocity.x = 0;
-					velocity.z = 0;
-					velocity.y = 0;
+						defPointerUnlockElement.exitPointerLock();
+						menuScreen.style.display = "block";
+						blocker.style.display = "block";
+						pauseScreen.style.display = "none";	
 					}
 					else{
 						if ( moveForward || moveBackward ) velocity.z -= direction.z * 400.0 * delta;
