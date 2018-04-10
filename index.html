@@ -306,6 +306,7 @@
 					var objLoader = new THREE.OBJLoader();
 					objLoader.setMaterials( materials );
 					objLoader.load( 'models/Rock1.obj', function ( object ) {
+						object.material.color.setHex( 0xffffff );
 						camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 350 );
 						scene = new THREE.Scene();
 						scene.background = new THREE.Color( 0x660000 );
@@ -486,7 +487,7 @@
 							objects.push( box );
 						}
 					      
-	                    var boxMaterial2 = new THREE.MeshPhongMaterial({color:0x00FFF6, transparent:true, opacity:0, side: THREE.DoubleSide});
+	                    var boxMaterial2 = new THREE.MeshPhongMaterial({color:0xff0000, transparent:true, opacity:0, side: THREE.DoubleSide});
 						for ( var i = 0; i < 1400; i ++ ) {
 
 							var box2 = new THREE.Mesh( boxGeometry2, boxMaterial2 );
