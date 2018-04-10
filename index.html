@@ -306,7 +306,6 @@
 					var objLoader = new THREE.OBJLoader();
 					objLoader.setMaterials( materials );
 					objLoader.load( 'models/Rock1.obj', function ( object ) {
-						object.material.color.setHex( 0x00ffec );
 						camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 350 );
 						scene = new THREE.Scene();
 						scene.background = new THREE.Color( 0x660000 );
