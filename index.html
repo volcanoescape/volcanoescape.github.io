@@ -145,6 +145,7 @@
 			var objects3 = [];
 			var boundBoxes = [];
 			var raycaster;
+			var score = 0;
 			var blocker = document.getElementById( 'blocker' );
 			var instructions = document.getElementById( 'instructions' );
 
@@ -691,7 +692,12 @@
 					} 
 					prevTime = time;
 				}
-				document.getElementById("scoreText").innerHTML = "Score: ".concat(camera.getWorldPosition().y-10);
+				currentScore = round(camera.getWorldPosition().y-10)
+				if (currentScore > score)
+				{
+					score = currentScore;
+				}
+				document.getElementById("scoreText").innerHTML = "Score: ".concat(score);
 				renderer.render( scene, camera );
 			}
 		</script>
