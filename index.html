@@ -442,15 +442,15 @@
 					}
 
 
-				 var boxGeometry = new THREE.BoxGeometry( 12, 1, 12);
+				 var boxGeometry = new THREE.BoxGeometry( 12, 0.01, 12);
 				for ( var i = 0, l = floorGeometry.faces.length; i < l; i ++ ) {
 				var face1 = floorGeometry.faces[ i ];
 				}
-				 var boxGeometry2 = new THREE.BoxGeometry( 23, 1, 23);
+				 var boxGeometry2 = new THREE.BoxGeometry( 23, 0.01, 23);
 				for ( var i = 0, l = floorGeometry.faces.length; i < l; i ++ ) {
 				var face2 = floorGeometry.faces[ i ];
 				}
-				var boxGeometry3 = new THREE.BoxGeometry( 16, 1, 16);
+				var boxGeometry3 = new THREE.BoxGeometry( 16, 0.01, 16);
 				for ( var i = 0, l = floorGeometry.faces.length; i < l; i ++ ) {
 				var face3 = floorGeometry.faces[ i ];
 				}
@@ -465,7 +465,7 @@
 						// objects
 						var boxMaterial = new THREE.MeshPhongMaterial({color:0xff0000, transparent:true, opacity:0, side: THREE.DoubleSide});
 						for ( var i = 0; i < 600; i ++ ) {
-							//boxMaterial.color.setHSL( Math.random() * 0.2 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
+							boxMaterial.color.setHSL( Math.random() * 0.2 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
 
 							var box = new THREE.Mesh( boxGeometry, boxMaterial );
 							var randomXPos = Math.floor( Math.random() * 20 - 10 ) * 7;
