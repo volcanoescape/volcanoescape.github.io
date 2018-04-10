@@ -474,7 +474,6 @@
 							box.position.y = randomYPos;
 							box.position.z = randomZPos;
 							var object2 = object.clone();
-							object2.material.color.setHex( 0x00ffec );
 							object2.position.x = randomXPos;
 							object2.position.y = randomYPos-6;
 							object2.position.z = randomZPos;
@@ -512,8 +511,6 @@
 
 						var boxMaterial3 = new THREE.MeshPhongMaterial({color:0xff0000, transparent:true, opacity:0, side: THREE.DoubleSide});
 						for ( var i = 0; i < 400; i ++ ) {
-							//boxMaterial.color.setHSL( Math.random() * 0.2 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-
 							var box3 = new THREE.Mesh( boxGeometry3, boxMaterial3 );
 							var randomXPos = Math.floor( Math.random() * 20 - 10 ) * 7;
 							var randomYPos = Math.floor( Math.random() * 600 ) * 20 + 10;
