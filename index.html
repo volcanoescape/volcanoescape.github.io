@@ -302,6 +302,7 @@
 			function init() {
 				var mtlLoader = new THREE.MTLLoader();
 				mtlLoader.load( 'models/Rock1.mtl', function( materials ) {
+					materials.color.set(0xff0000);
 					materials.preload();
 					var objLoader = new THREE.OBJLoader();
 					objLoader.setMaterials( materials );
