@@ -12,15 +12,19 @@
 	script.src = "//rawgit.com/mrdoob/stats.js/master/build/stats.min.js";
 	document.head.appendChild(script);
 })();
+// Variables for bound boxes
 var wallTwoBound, wallThreeBound, wallFourBound, wallOneBound, floor, lava;
+// Menu buttons
 var audio, playbtn, music, pausebtn, slectLevelBtn, iceyBtn, chemicalBtn;
 var rockObject;
+// Camera,controls and scene objects
 var camera, scene, renderer, controls;
+// Whether or not the game is paused
 var gamePause;
+// Stores bound boxes for the jumpy rocks, normal rocks and sinking rocks, respectively
 var objects = [],
 	objects2 = [],
 	objects3 = [];
-var boundBoxes = [];
 var raycaster;
 var score = 0;
 var floorColour = 0x615d5a,
@@ -442,7 +446,7 @@ function init() {
 				var wall4 = new THREE.Mesh(wallGeometry4, wallMaterial);
 				scene.add(wall, wall2, wall3, wall4);
 
-				// objects
+				// Creates the jumpy rocks
 				var boxMaterial = new THREE.MeshPhongMaterial({
 					color: 0xff0000,
 					transparent: true,
@@ -450,6 +454,7 @@ function init() {
 					side: THREE.DoubleSide
 				});
 				for (var i = 0; i < 500; i++) {
+					// Creates the bound box of the rock
 					var box = new THREE.Mesh(boxGeometry, boxMaterial);
 					var randomXPos = Math.floor(Math.random() * 20 - 8.85) * 6;
 					var randomYPos = Math.floor(Math.random() * 600) * 18 + 10;
@@ -457,6 +462,7 @@ function init() {
 					box.position.x = randomXPos;
 					box.position.y = randomYPos;
 					box.position.z = randomZPos;
+					// Creates the visable rock
 					var object2 = object.clone();
 					object2.position.x = randomXPos;
 					object2.position.y = randomYPos - 6;
@@ -469,7 +475,7 @@ function init() {
 					scene.add(box);
 					objects.push(box);
 				}
-
+				// Creates the normal rocks
 				var boxMaterial2 = new THREE.MeshPhongMaterial({
 					color: 0xff0000,
 					transparent: true,
@@ -477,6 +483,7 @@ function init() {
 					side: THREE.DoubleSide
 				});
 				for (var i = 0; i < 1600; i++) {
+					// Creates the bound box of the rock
 					var box2 = new THREE.Mesh(boxGeometry2, boxMaterial2);
 					var randomXPos = Math.floor(Math.random() * 20 - 8.85) * 6;
 					var randomYPos = Math.floor(Math.random() * 600) * 18 + 10;
@@ -484,6 +491,7 @@ function init() {
 					box2.position.x = randomXPos;
 					box2.position.y = randomYPos;
 					box2.position.z = randomZPos;
+					// Creates the visable rock
 					var object3 = object.clone();
 					object3.position.x = randomXPos;
 					object3.position.y = randomYPos - 12;
@@ -496,6 +504,7 @@ function init() {
 					scene.add(box2);
 					objects2.push(box2);
 				}
+				// Creates the sinking rocks
 				var boxMaterial3 = new THREE.MeshPhongMaterial({
 					color: 0xff0000,
 					transparent: true,
@@ -503,6 +512,7 @@ function init() {
 					side: THREE.DoubleSide
 				});
 				for (var i = 0; i < 200; i++) {
+					// Creates the bound box of the rock
 					var box3 = new THREE.Mesh(boxGeometry3, boxMaterial3);
 					var randomXPos = Math.floor(Math.random() * 20 - 8.85) * 6;
 					var randomYPos = Math.floor(Math.random() * 600) * 18 + 10;
@@ -510,6 +520,7 @@ function init() {
 					box3.position.x = randomXPos;
 					box3.position.y = randomYPos;
 					box3.position.z = randomZPos;
+					// Creates the visable rock
 					var object4 = object.clone();
 					object4.position.x = randomXPos;
 					object4.position.y = randomYPos - 8;
@@ -522,6 +533,7 @@ function init() {
 					scene.add(box3);
 					objects3.push(box3);
 				}
+				// Creates bound boxes for the wall
 				wallOneBound = new THREE.BoxHelper(wall, 0xffff00);
 				wallOneBound.update(wall);
 				scene.add(wallOneBound);
