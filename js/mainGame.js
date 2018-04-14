@@ -24,7 +24,6 @@ var objects = [],
 var boundBoxes = [];
 var raycaster;
 var score = 0;
-var icey = false;
 var floorColour = 0x615d5a,
   floorColour2 = 0x803e00,
   floorColour3 = 0x000000,
@@ -70,6 +69,66 @@ function switchTrack() {
   audio.muted = true;
   music.muted = false;
 }
+
+// Remove key elements of enviroment, replace them with texturees in new style
+function switchLevel(icey) {
+  // Remove floor and remove lava
+  scene.remove(floor, floor2);
+  // Remove all four walls
+  scene.remove(wall, wall2, wall3, wall4);
+  if (icey == true) {
+    floorColour = 0xffffff;
+    floorColour2 = 0xd7dbff;
+    floorColour3 = 0xa8afe3;
+    wallColour = 0xd9f8fd;
+    lavaColour = 0x0921d2;
+    lavaColour2 = 0x8490f0;
+    lavaColour3 = 0x3e4fcc;
+  } else {
+    floorColour = 0x615d5a;
+    floorColour2 = 0x803e00;
+    floorColour3 = 0x000000;
+    wallColour = 0xd2691e;
+    lavaColour = 0xd2691e;
+    lavaColour2 = 0xe60000;
+    lavaColour3 = 0x661400;
+  }
+  for (var i = 0, l = floorGeometry2.faces.length; i < l; i++) {
+    var face5 = floorGeometry2.faces[i];
+    face5.vertexColors[0] = new THREE.Color(floorColour);
+    face5.vertexColors[1] = new THREE.Color(floorColour2);
+    face5.vertexColors[2] = new THREE.Color(floorColour3);
+  }
+  for (var i = 0, l = floorGeometry.faces.length; i < l; i++) {
+    var face4 = floorGeometry.faces[i];
+    face4.vertexColors[0] = new THREE.Color(lavaColour);
+    face4.vertexColors[1] = new THREE.Color(lavaColour2);
+    face4.vertexColors[2] = new THREE.Color(lavaColour3);
+  }
+
+  var floorMaterial = new THREE.MeshBasicMaterial({
+    vertexColors: THREE.VertexColors
+  });
+  floor = new THREE.Mesh(floorGeometry, floorMaterial);
+  var floorMaterial2 = new THREE.MeshBasicMaterial({
+    vertexColors: THREE.VertexColors
+  });
+  floor2 = new THREE.Mesh(floorGeometry2, floorMaterial2);
+  floor.translateY(-70);
+  scene.add(floor, floor2);
+  
+  var wallMaterial = new THREE.MeshBasicMaterial({
+    color: wallColour,
+    specular: 0xffffff,
+    flatShading: true
+  });
+  var wall = new THREE.Mesh(wallGeometry, wallMaterial);
+  var wall2 = new THREE.Mesh(wallGeometry2, wallMaterial);
+  var wall3 = new THREE.Mesh(wallGeometry3, wallMaterial);
+  var wall4 = new THREE.Mesh(wallGeometry4, wallMaterial);
+  scene.add(wall, wall2, wall3, wall4);
+
+}
 playbtn = document.getElementById("playBtn");
 playbtn.addEventListener("click", initAudioPlayer);
 iceyBtn = document.getElementById("iceyBtn");
@@ -93,13 +152,13 @@ document.addEventListener("click", e => {
     case "iceyBtn":
       defPointerLockElement.requestPointerLock();
       selectMenu.style.display = "none";
-      icey = true;
+      switchLevel(true);
       break;
 
     case "chemicalBtn":
       defPointerLockElement.requestPointerLock();
       selectMenu.style.display = "none";
-      icey = false;
+      switchLevel(false);
       break;
 
     case "helpBtn":
@@ -290,24 +349,6 @@ function init() {
         document.addEventListener("keydown", onKeyDown, false);
         document.addEventListener("keyup", onKeyUp, false);
 
-        // change map colours//
-        if (icey == true) {
-          floorColour = 0xffffff;
-          floorColour2 = 0xd7dbff;
-          floorColour3 = 0xa8afe3;
-          wallColour = 0xd9f8fd;
-          lavaColour = 0x0921d2;
-          lavaColour2 = 0x8490f0;
-          lavaColour3 = 0x3e4fcc;
-        } else {
-          floorColour = 0x615d5a;
-          floorColour2 = 0x803e00;
-          floorColour3 = 0x000000;
-          wallColour = 0xd2691e;
-          lavaColour = 0xd2691e;
-          lavaColour2 = 0xe60000;
-          lavaColour3 = 0x661400;
-        }
         //----------------------------------------------------------------//
         // floor and cubes//
         //----------------------------------------------------------------//
