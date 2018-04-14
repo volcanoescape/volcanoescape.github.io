@@ -127,7 +127,6 @@ function switchLevel(icey) {
   var wall3 = new THREE.Mesh(wallGeometry3, wallMaterial);
   var wall4 = new THREE.Mesh(wallGeometry4, wallMaterial);
   scene.add(wall, wall2, wall3, wall4);
-
 }
 playbtn = document.getElementById("playBtn");
 playbtn.addEventListener("click", initAudioPlayer);
@@ -417,7 +416,6 @@ function init() {
         var boxGeometry2 = new THREE.BoxGeometry(16, 0.01, 16);
 
         var boxGeometry3 = new THREE.BoxGeometry(21, 0.01, 21);
-
 
         var wallMaterial = new THREE.MeshBasicMaterial({
           color: wallColour,
