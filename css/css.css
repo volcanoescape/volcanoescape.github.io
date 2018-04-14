@@ -57,6 +57,10 @@
             	background-color: #2f2f2f;
 				border: 5px #ff1f00 solid;
             }
+            .button-level {
+				background-color: #2f2f2f;
+				border: 5px #ff1f00 solid;
+			}
 			img {
                     padding:-100px;
                      max-width: 100%;
