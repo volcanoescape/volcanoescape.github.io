@@ -697,8 +697,8 @@ function animate() {
 		}
 		//--------------------------------------------------------//
 		//makes lava go up//
-		var lavaSpeedValue = document.getElementById("lavaSpeed").valu
-		floorGeometry.translate(0, lavaSpeedValue / 10, 0);
+		var lavaSpeedValue = (document.getElementById("lavaSpeed").value) / 10;
+		floorGeometry.translate(0, lavaSpeedValue , 0);
 		//---------------------------------------------------------//
 		controls.getObject().translateX(velocity.x * delta);
 		controls.getObject().translateY(velocity.y * delta);
