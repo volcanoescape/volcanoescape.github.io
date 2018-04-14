@@ -126,3 +126,8 @@ img {
   right: 16px;
   font-size: 35px;
 }
+#slidecontainer {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}
