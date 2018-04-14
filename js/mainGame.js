@@ -116,7 +116,7 @@ function switchLevel(icey) {
   floor2 = new THREE.Mesh(floorGeometry2, floorMaterial2);
   floor.translateY(-70);
   scene.add(floor, floor2);
-  
+
   var wallMaterial = new THREE.MeshBasicMaterial({
     color: wallColour,
     specular: 0xffffff,
@@ -413,17 +413,11 @@ function init() {
           face5.vertexColors[2] = new THREE.Color(floorColour3);
         }
         var boxGeometry = new THREE.BoxGeometry(13, 0.01, 13);
-        for (var i = 0, l = floorGeometry.faces.length; i < l; i++) {
-          var face1 = floorGeometry.faces[i];
-        }
+
         var boxGeometry2 = new THREE.BoxGeometry(16, 0.01, 16);
-        for (var i = 0, l = floorGeometry.faces.length; i < l; i++) {
-          var face2 = floorGeometry.faces[i];
-        }
+
         var boxGeometry3 = new THREE.BoxGeometry(21, 0.01, 21);
-        for (var i = 0, l = floorGeometry.faces.length; i < l; i++) {
-          var face3 = floorGeometry.faces[i];
-        }
+
 
         var wallMaterial = new THREE.MeshBasicMaterial({
           color: wallColour,
