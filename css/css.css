@@ -1,133 +1,133 @@
 ﻿html,
 body {
-  width: 100%;
-  height: 100%;
+	width: 100%;
+	height: 100%;
 }
 body {
-  background-color: #ffffff;
-  margin: 0;
-  overflow: hidden;
-  font-family: arial;
+	background-color: #ffffff;
+	margin: 0;
+	overflow: hidden;
+	font-family: arial;
 }
 #blocker {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  cursor: default;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	cursor: default;
 }
 #pauseScreen,
 #menuScreen,
 #instructions,
 #selectMenu {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  text-align: center;
-  width: 100%;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	text-align: center;
+	width: 100%;
 }
 #pauseScreen,
 #instructions,
 #selectMenu {
-  display: none;
+	display: none;
 }
 #buttons {
-  bottom: 100px;
+	bottom: 100px;
 }
 .button {
-  width: 30%;
-  color: #ff1f00;
-  padding: 5px;
-  font-size: 30px;
-  margin: 0 auto;
-  cursor: pointer;
-  margin-top: 10px;
+	width: 30%;
+	color: #ff1f00;
+	padding: 5px;
+	font-size: 30px;
+	margin: 0 auto;
+	cursor: pointer;
+	margin-top: 10px;
 }
 .button-play {
-  background-color: #2f2f2f;
-  border: 5px #ff1f00 solid;
+	background-color: #2f2f2f;
+	border: 5px #ff1f00 solid;
 }
 .button-leaderboard {
-  background-color: #2f2f2f;
-  border: 5px #ff1f00 solid;
+	background-color: #2f2f2f;
+	border: 5px #ff1f00 solid;
 }
 .button-help {
-  background-color: #2f2f2f;
-  border: 5px #ff1f00 solid;
+	background-color: #2f2f2f;
+	border: 5px #ff1f00 solid;
 }
 .button-continue {
-  background-color: #2f2f2f;
-  border: 5px #ff1f00 solid;
+	background-color: #2f2f2f;
+	border: 5px #ff1f00 solid;
 }
 .button-quit {
-  background-color: #2f2f2f;
-  border: 5px #ff1f00 solid;
+	background-color: #2f2f2f;
+	border: 5px #ff1f00 solid;
 }
 .button-level {
-  background-color: #2f2f2f;
-  border: 5px #ff1f00 solid;
+	background-color: #2f2f2f;
+	border: 5px #ff1f00 solid;
 }
 img {
-  padding: -100px;
-  max-width: 100%;
-  height: auto;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 80%;
+	padding: -100px;
+	max-width: 100%;
+	height: auto;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 80%;
 }
 .keyboard-instructions {
-  background-color: #2f2f2f;
-  border: 5px #ff1f00 solid;
-  width: 30%;
-  color: #ff1f00;
-  padding: 5px;
-  font-size: 30px;
-  margin: 0 auto;
-  cursor: pointer;
-  margin-top: 10px;
+	background-color: #2f2f2f;
+	border: 5px #ff1f00 solid;
+	width: 30%;
+	color: #ff1f00;
+	padding: 5px;
+	font-size: 30px;
+	margin: 0 auto;
+	cursor: pointer;
+	margin-top: 10px;
 }
 #iceyBtn {
-  background-color: #2f2f2f;
-  border: 5px #ff1f00 solid;
-  width: 30%;
-  color: #ff1f00;
-  padding: 5px;
-  font-size: 30px;
-  margin: 0 auto;
-  cursor: pointer;
-  margin-top: 10px;
+	background-color: #2f2f2f;
+	border: 5px #ff1f00 solid;
+	width: 30%;
+	color: #ff1f00;
+	padding: 5px;
+	font-size: 30px;
+	margin: 0 auto;
+	cursor: pointer;
+	margin-top: 10px;
 }
 #chemicalBtn {
-  background-color: #2f2f2f;
-  border: 5px #ff1f00 solid;
-  width: 30%;
-  color: #ff1f00;
-  padding: 5px;
-  font-size: 30px;
-  margin: 0 auto;
-  cursor: pointer;
-  margin-top: 10px;
+	background-color: #2f2f2f;
+	border: 5px #ff1f00 solid;
+	width: 30%;
+	color: #ff1f00;
+	padding: 5px;
+	font-size: 30px;
+	margin: 0 auto;
+	cursor: pointer;
+	margin-top: 10px;
 }
 #backBtn {
-  width: 30%;
-  color: #ff1f00;
-  padding: 5px;
-  font-size: 30px;
-  margin: 0 auto;
-  cursor: pointer;
-  margin-top: 10px;
-  background-color: #2f2f2f;
-  border: 5px #ff1f00 solid;
+	width: 30%;
+	color: #ff1f00;
+	padding: 5px;
+	font-size: 30px;
+	margin: 0 auto;
+	cursor: pointer;
+	margin-top: 10px;
+	background-color: #2f2f2f;
+	border: 5px #ff1f00 solid;
 }
 #score {
-  position: absolute;
-  top: 8px;
-  right: 16px;
-  font-size: 35px;
+	position: absolute;
+	top: 8px;
+	right: 16px;
+	font-size: 35px;
 }
 #slidecontainer {
-  position: fixed;
-  bottom: 0;
-  right: 0;
+	position: fixed;
+	bottom: 0;
+	right: 0;
 }
