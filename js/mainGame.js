@@ -12,7 +12,7 @@
 	script.src = "//rawgit.com/mrdoob/stats.js/master/build/stats.min.js";
 	document.head.appendChild(script);
 })();
-var box9, box8, box7, box10, floor, floor2;
+var wallTwoBound, wallThreeBound, wallFourBound, wallOneBound, floor, lava;
 var audio, playbtn, music, pausebtn, slectLevelBtn, iceyBtn, chemicalBtn;
 var rockObject;
 var camera, scene, renderer, controls;
@@ -72,7 +72,7 @@ function switchTrack() {
 // Remove key elements of enviroment, replace them with texturees in new style
 function switchLevel(icey) {
 	// Remove floor and remove lava
-	scene.remove(floor, floor2);
+	scene.remove(floor, lava);
 	// Remove all four walls
 	scene.remove(wall, wall2, wall3, wall4);
 	if (icey == true) {
@@ -127,9 +127,9 @@ function switchLevel(icey) {
 	var floorMaterial2 = new THREE.MeshBasicMaterial({
 		vertexColors: THREE.VertexColors
 	});
-	floor2 = new THREE.Mesh(floorGeometry2, floorMaterial2);
+	lava = new THREE.Mesh(floorGeometry2, floorMaterial2);
 	floor.translateY(-70);
-	scene.add(floor, floor2);
+	scene.add(floor, lava);
 
 	var wallMaterial = new THREE.MeshBasicMaterial({
 		color: wallColour,
@@ -522,18 +522,18 @@ function init() {
 					scene.add(box3);
 					objects3.push(box3);
 				}
-				box10 = new THREE.BoxHelper(wall, 0xffff00);
-				box10.update(wall);
-				scene.add(box10);
-				box9 = new THREE.BoxHelper(wall2, 0xffff00);
-				box9.update(wall2);
-				scene.add(box9);
-				box8 = new THREE.BoxHelper(wall3, 0xffff00);
-				box8.update(wall3);
-				scene.add(box8);
-				box7 = new THREE.BoxHelper(wall4, 0xffff00);
-				box7.update(wall4);
-				scene.add(box10, box9, box8, box7);
+				wallOneBound = new THREE.BoxHelper(wall, 0xffff00);
+				wallOneBound.update(wall);
+				scene.add(wallOneBound);
+				wallTwoBound = new THREE.BoxHelper(wall2, 0xffff00);
+				wallTwoBound.update(wall2);
+				scene.add(wallTwoBound);
+				wallThreeBound = new THREE.BoxHelper(wall3, 0xffff00);
+				wallThreeBound.update(wall3);
+				scene.add(wallThreeBound);
+				wallFourBound = new THREE.BoxHelper(wall4, 0xffff00);
+				wallFourBound.update(wall4);
+				scene.add(wallOneBound, wallTwoBound, wallThreeBound, wallFourBound);
 				raycaster = new THREE.Raycaster(
 					new THREE.Vector3(),
 					new THREE.Vector3(0, 1, 0),
@@ -555,9 +555,9 @@ function init() {
 				var floorMaterial2 = new THREE.MeshBasicMaterial({
 					vertexColors: THREE.VertexColors
 				});
-				floor2 = new THREE.Mesh(floorGeometry2, floorMaterial2);
+				lava = new THREE.Mesh(floorGeometry2, floorMaterial2);
 				floor.translateY(-70);
-				scene.add(floor, floor2);
+				scene.add(floor, lava);
 				//
 				renderer = new THREE.WebGLRenderer();
 				renderer.setPixelRatio(window.devicePixelRatio);
@@ -589,10 +589,10 @@ function animate() {
 		var intersections = raycaster.intersectObjects(objects);
 		var intersections2 = raycaster.intersectObjects(objects2);
 		var intersections3 = raycaster.intersectObjects(objects3);
-		var intersections4 = raycasterWall.intersectObject(box10);
-		var intersections5 = raycasterWall.intersectObject(box9);
-		var intersections6 = raycasterWall.intersectObject(box8);
-		var intersections7 = raycasterWall.intersectObject(box7);
+		var intersections4 = raycasterWall.intersectObject(wallOneBound);
+		var intersections5 = raycasterWall.intersectObject(wallTwoBound);
+		var intersections6 = raycasterWall.intersectObject(wallThreeBound);
+		var intersections7 = raycasterWall.intersectObject(wallFourBound);
 		var intersections8 = raycasterWall.intersectObject(floor);
 		var onObject = intersections.length > 0;
 		var onObject2 = intersections2.length > 0;
