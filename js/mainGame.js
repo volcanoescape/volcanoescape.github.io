@@ -21,12 +21,13 @@ var rockObject;
 var camera, scene, renderer, controls;
 // Whether or not the game is paused
 var gamePause;
-// Stores bound boxes for the jumpy rocks, normal rocks and sinking rocks, respectively
+// Stores bound boxes objects for the jumpy rocks, normal rocks and sinking rocks, respectively
 var objects = [],
 	objects2 = [],
 	objects3 = [];
 var raycaster;
 var score = 0;
+// Colors for ridges of the wall and the lava
 var floorColour = 0x615d5a,
 	floorColour2 = 0x803e00,
 	floorColour3 = 0x000000,
@@ -34,12 +35,14 @@ var floorColour = 0x615d5a,
 var lavaColour = 0xd2691e,
 	lavaColour2 = 0xe60000,
 	lavaColour3 = 0x661400;
+// Elements of the menu screen
 var blocker = document.getElementById("blocker");
 var instructions = document.getElementById("instructions");
 var selectMenu = document.getElementById("selectMenu");
 var menuScreen = document.getElementById("menuScreen");
 var pauseScreen = document.getElementById("pauseScreen");
 var selectScreen = document.getElementById("selectScreen");
+// Gets pointer lock
 var defPointerLockElement = document.body;
 var defPointerUnlockElement = document;
 defPointerLockElement.requestPointerLock =
@@ -51,7 +54,7 @@ defPointerUnlockElement.exitPointerLock =
 	defPointerUnlockElement.exitPointerLock ||
 	defPointerUnlockElement.mozExitPointerLock ||
 	defPointerUnlockElement.webkitExitPointerLock;
-
+// Loads music
 function mainMenuMusic() {
 	music = new Audio();
 	music.src = "audio/menuMusic.mp3";
@@ -79,6 +82,7 @@ function switchLevel(icey) {
 	scene.remove(floor, lava);
 	// Remove all four walls
 	scene.remove(wall, wall2, wall3, wall4);
+	// Sets colors depending on selection
 	if (icey == true) {
 		floorColour = 0xffffff;
 		floorColour2 = 0xd7dbff;
@@ -96,6 +100,7 @@ function switchLevel(icey) {
 		lavaColour2 = 0xe60000;
 		lavaColour3 = 0x661400;
 	}
+	// Generate new floor geometry object
 	floorGeometry = new THREE.PlaneGeometry(200, 200, 70, 70);
 	floorGeometry.rotateX(-Math.PI / 2);
 	for (var i = 0, l = floorGeometry.vertices.length; i < l; i++) {
@@ -110,16 +115,17 @@ function switchLevel(icey) {
 		face4.vertexColors[1] = new THREE.Color(lavaColour2);
 		face4.vertexColors[2] = new THREE.Color(lavaColour3);
 	}
-	floorGeometry2 = new THREE.PlaneGeometry(200, 200, 30, 30);
-	floorGeometry2.rotateX(-Math.PI / 2);
-	for (var i = 0, l = floorGeometry2.vertices.length; i < l; i++) {
-		var vertex2 = floorGeometry2.vertices[i];
+	// Generate new lava geometry object
+	lavaGeometry = new THREE.PlaneGeometry(200, 200, 30, 30);
+	lavaGeometry.rotateX(-Math.PI / 2);
+	for (var i = 0, l = lavaGeometry.vertices.length; i < l; i++) {
+		var vertex2 = lavaGeometry.vertices[i];
 		vertex2.x += Math.random() * 15 - 10;
 		vertex2.y += Math.random() * 1;
 		vertex2.z += Math.random() * 15 - 10;
 	}
-	for (var i = 0, l = floorGeometry2.faces.length; i < l; i++) {
-		var face5 = floorGeometry2.faces[i];
+	for (var i = 0, l = lavaGeometry.faces.length; i < l; i++) {
+		var face5 = lavaGeometry.faces[i];
 		face5.vertexColors[0] = new THREE.Color(floorColour);
 		face5.vertexColors[1] = new THREE.Color(floorColour2);
 		face5.vertexColors[2] = new THREE.Color(floorColour3);
@@ -131,10 +137,10 @@ function switchLevel(icey) {
 	var floorMaterial2 = new THREE.MeshBasicMaterial({
 		vertexColors: THREE.VertexColors
 	});
-	lava = new THREE.Mesh(floorGeometry2, floorMaterial2);
+	lava = new THREE.Mesh(lavaGeometry, floorMaterial2);
 	floor.translateY(-70);
 	scene.add(floor, lava);
-
+	// Generate new walls
 	var wallMaterial = new THREE.MeshBasicMaterial({
 		color: wallColour,
 		specular: 0xffffff,
@@ -154,9 +160,9 @@ iceyBtn.addEventListener("click", initAudioPlayer);
 chemicalBtn.addEventListener("click", initAudioPlayer);
 quitbtn = document.getElementById("quitBtn");
 quitbtn.addEventListener("click", switchTrack);
+// Event listener for menu screen
 document.addEventListener("click", e => {
 	switch (e.target.id) {
-		//#region menuScreen
 		case "playBtn":
 			defPointerLockElement.requestPointerLock();
 			menuScreen.style.display = "none";
@@ -267,16 +273,6 @@ var onProgress = function(xhr) {
 };
 var onError = function(xhr) {};
 
-function spawnRockObject(x, y, z) {
-	rockObject.position.x = x;
-	rockObject.position.y = y;
-	rockObject.position.z = z;
-	rockObject.castShadow = true;
-	rockObject.scale.set(5, 5, 5);
-	rockObject.receiveShadow = true;
-	scene.add(rockObject);
-}
-
 init();
 
 var controlsEnabled = false;
@@ -289,7 +285,7 @@ var prevTime = performance.now();
 var velocity = new THREE.Vector3();
 var direction = new THREE.Vector3();
 var floorGeometry;
-var floorGeometry2;
+var lavaGeometry;
 var wallGeometry;
 var wallGeometry2;
 var wallGeometry3;
@@ -297,6 +293,7 @@ var wallGeometry4;
 
 function init() {
 	var mtlLoader = new THREE.MTLLoader();
+	// Entire initialisation is ran inside callback, to prevent javascript not loading RockObject
 	mtlLoader.load("models/Rock1.mtl", function(materials) {
 		materials.preload();
 		var objLoader = new THREE.OBJLoader();
@@ -369,7 +366,8 @@ function init() {
 				//----------------------------------------------------------------//
 				// floor and cubes//
 				//----------------------------------------------------------------//
-
+				
+				// Creates wall geometry
 				wallGeometry = new THREE.PlaneGeometry(300, 10000, 360, 160);
 				for (var i = 0, l = wallGeometry.vertices.length; i < l; i++) {
 					var vertex = wallGeometry.vertices[i];
@@ -401,6 +399,7 @@ function init() {
 					vertex.y += Math.random() * 3 + 5000;
 					vertex.z += Math.random() * 30 - 5;
 				}
+				// Creates floor geometry
 				floorGeometry = new THREE.PlaneGeometry(200, 200, 70, 70);
 				floorGeometry.rotateX(-Math.PI / 2);
 				for (var i = 0, l = floorGeometry.vertices.length; i < l; i++) {
@@ -415,20 +414,22 @@ function init() {
 					face4.vertexColors[1] = new THREE.Color(lavaColour2);
 					face4.vertexColors[2] = new THREE.Color(lavaColour3);
 				}
-				floorGeometry2 = new THREE.PlaneGeometry(200, 200, 30, 30);
-				floorGeometry2.rotateX(-Math.PI / 2);
-				for (var i = 0, l = floorGeometry2.vertices.length; i < l; i++) {
-					var vertex2 = floorGeometry2.vertices[i];
+				// Creates lava geometry
+				lavaGeometry = new THREE.PlaneGeometry(200, 200, 30, 30);
+				lavaGeometry.rotateX(-Math.PI / 2);
+				for (var i = 0, l = lavaGeometry.vertices.length; i < l; i++) {
+					var vertex2 = lavaGeometry.vertices[i];
 					vertex2.x += Math.random() * 15 - 10;
 					vertex2.y += Math.random() * 1;
 					vertex2.z += Math.random() * 15 - 10;
 				}
-				for (var i = 0, l = floorGeometry2.faces.length; i < l; i++) {
-					var face5 = floorGeometry2.faces[i];
+				for (var i = 0, l = lavaGeometry.faces.length; i < l; i++) {
+					var face5 = lavaGeometry.faces[i];
 					face5.vertexColors[0] = new THREE.Color(floorColour);
 					face5.vertexColors[1] = new THREE.Color(floorColour2);
 					face5.vertexColors[2] = new THREE.Color(floorColour3);
 				}
+				// Creates geometry for bound boxes
 				var boxGeometry = new THREE.BoxGeometry(13, 0.01, 13);
 
 				var boxGeometry2 = new THREE.BoxGeometry(16, 0.01, 16);
@@ -465,6 +466,7 @@ function init() {
 					// Creates the visable rock
 					var object2 = object.clone();
 					object2.position.x = randomXPos;
+					// -y so that visible rock is slightly below bound box, giving illusion of height
 					object2.position.y = randomYPos - 6;
 					object2.position.z = randomZPos;
 					object2.castShadow = true;
@@ -494,6 +496,7 @@ function init() {
 					// Creates the visable rock
 					var object3 = object.clone();
 					object3.position.x = randomXPos;
+					// -y so that visible rock is slightly below bound box, giving illusion of height
 					object3.position.y = randomYPos - 12;
 					object3.position.z = randomZPos;
 					object3.castShadow = true;
@@ -523,6 +526,7 @@ function init() {
 					// Creates the visable rock
 					var object4 = object.clone();
 					object4.position.x = randomXPos;
+					// -y so that visible rock is slightly below bound box, giving illusion of height
 					object4.position.y = randomYPos - 8;
 					object4.position.z = randomZPos;
 					object4.castShadow = true;
@@ -567,7 +571,7 @@ function init() {
 				var floorMaterial2 = new THREE.MeshBasicMaterial({
 					vertexColors: THREE.VertexColors
 				});
-				lava = new THREE.Mesh(floorGeometry2, floorMaterial2);
+				lava = new THREE.Mesh(lavaGeometry, floorMaterial2);
 				floor.translateY(-70);
 				scene.add(floor, lava);
 				//
@@ -598,6 +602,7 @@ function animate() {
 		raycaster.ray.origin.y -= 10;
 		raycasterWall.ray.origin.copy(controls.getObject().position);
 		raycasterWall.ray.origin.y -= 10;
+		// Creates raycaster objects to detect intersections
 		var intersections = raycaster.intersectObjects(objects);
 		var intersections2 = raycaster.intersectObjects(objects2);
 		var intersections3 = raycaster.intersectObjects(objects3);
@@ -606,6 +611,7 @@ function animate() {
 		var intersections6 = raycasterWall.intersectObject(wallThreeBound);
 		var intersections7 = raycasterWall.intersectObject(wallFourBound);
 		var intersections8 = raycasterWall.intersectObject(floor);
+		// Detects if player has made contact with a bound box
 		var onObject = intersections.length > 0;
 		var onObject2 = intersections2.length > 0;
 		var onObject3 = intersections3.length > 0;
@@ -621,8 +627,11 @@ function animate() {
 		velocity.y -= 4 * 100.0 * delta; // 100.0 = mass
 		direction.z = Number(moveForward) - Number(moveBackward);
 		direction.x = Number(moveLeft) - Number(moveRight);
-		direction.normalize(); // this ensures consistent movements in all directions
+		// This ensures consistent movements in all directions
+		direction.normalize();
+
 		if (gamePause) {
+			// stops game when you die, controls disabled
 			defPointerUnlockElement.exitPointerLock();
 			document.getElementById("continueBtn").style.display = "none";
 		} else {
@@ -642,6 +651,7 @@ function animate() {
 				velocity.y = Math.max(0, velocity.y);
 				canJump = true;
 			}
+			// When you hit a sinking rock
 			if (onObject3 === true) {
 				velocity.y = Math.max(-7, velocity.y);
 				canJump = false;
@@ -707,8 +717,7 @@ function animate() {
 			scene.fog = new THREE.Fog(0xe76201, 0, 60);
 			gamePause = true;
 		}
-		//--------------------------------------------------------//
-		//makes lava go up//
+		// Makes lava go up 
 		var lavaSpeedValue = document.getElementById("lavaSpeed").value / 10;
 		floorGeometry.translate(0, lavaSpeedValue, 0);
 		//---------------------------------------------------------//
