@@ -12,10 +12,13 @@
 	script.src = "//rawgit.com/mrdoob/stats.js/master/build/stats.min.js";
 	document.head.appendChild(script);
 })();
+var wantsToPlayMusic = true;
 // Variables for bound boxes
 var wallTwoBound, wallThreeBound, wallFourBound, wallOneBound, floor, lava;
 // Menu buttons
 var audio, playbtn, music, pausebtn, slectLevelBtn, iceyBtn, chemicalBtn;
+// Audio
+var gameAudio, mainMenuMusic, deathAudio, playDeath, mutebtn;
 var rockObject;
 // Camera,controls and scene objects
 var camera, scene, renderer, controls;
@@ -54,27 +57,11 @@ defPointerUnlockElement.exitPointerLock =
 	defPointerUnlockElement.exitPointerLock ||
 	defPointerUnlockElement.mozExitPointerLock ||
 	defPointerUnlockElement.webkitExitPointerLock;
-// Loads music
-function mainMenuMusic() {
-	music = new Audio();
-	music.src = "audio/menuMusic.mp3";
-	music.loop = true;
-	music.play();
-}
-window.addEventListener("load", mainMenuMusic);
 
-function initAudioPlayer() {
-	music.muted = true;
-	audio = new Audio();
-	audio.src = "audio/gameplayMusic.mp3";
-	audio.loop = true;
-	audio.play();
-}
-
-function switchTrack() {
-	audio.muted = true;
-	music.muted = false;
-}
+	setTimeout(hideDiv, 11000);
+	function hideDiv() {
+		document.getElementById("loadingScreen").style.display="none";    
+	}
 
 // Remove key elements of enviroment, replace them with texturees in new style
 function switchLevel(icey) {
@@ -152,14 +139,69 @@ function switchLevel(icey) {
 	var wall4 = new THREE.Mesh(wallGeometry4, wallMaterial);
 	scene.add(wall, wall2, wall3, wall4);
 }
-playbtn = document.getElementById("playBtn");
-playbtn.addEventListener("click", initAudioPlayer);
+
 iceyBtn = document.getElementById("iceyBtn");
 chemicalBtn = document.getElementById("chemicalBtn");
-iceyBtn.addEventListener("click", initAudioPlayer);
-chemicalBtn.addEventListener("click", initAudioPlayer);
+iceyBtn.addEventListener("click", switchTrack);
+chemicalBtn.addEventListener("click", switchTrack);
 quitbtn = document.getElementById("quitBtn");
 quitbtn.addEventListener("click", switchTrack);
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+mainMenuMusic = new Audio();
+mainMenuMusic.src = "audio/menuMusic.mp3";
+mainMenuMusic.loop = true;
+mainMenuMusic.play();
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------------
+mutebtn = document.getElementById("muteBtn");
+mutebtn.style.background = "url(images/speaker.png) no-repeat";
+mutebtn.addEventListener("click", muteAudio);
+
+function muteAudio(){
+	var isMuted = 	mainMenuMusic.muted;
+	if(	isMuted === true){
+		   mainMenuMusic.muted = !mainMenuMusic.muted;
+		mutebtn.style.background = "";
+		mutebtn.style.background = "url(images/speaker.png) no-repeat";
+		wantsToPlayMusic = true;
+	} 
+
+	if (isMuted === false) {
+		mainMenuMusic.muted = !mainMenuMusic.muted;
+		mutebtn.style.background = "";
+			mutebtn.style.background = "url(images/muted.png) no-repeat";
+		   wantsToPlayMusic = false;
+	}
+}
+//----------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------------
+playbtn = document.getElementById("playBtn");
+
+if (wantsToPlayMusic==true)
+{
+	playbtn.addEventListener("click", switchTrack);
+}
+
+function switchTrack(){
+	mainMenuMusic.muted=true;
+	if(wantsToPlayMusic){
+		gameAudio = new Audio();
+		gameAudio.src = "audio/gameplayMusic.mp3";
+		gameAudio.loop = true;
+		gameAudio.play();
+	}
+}
+//----------------------------------------------------------------------------------------------------------------------------------------------------------
+function pauseGameplay(){
+	gameAudio.muted=true;
+}
+//----------------------------------------------------------------------------------------------------------------------------------------------------------
+
 // Event listener for menu screen
 document.addEventListener("click", e => {
 	switch (e.target.id) {
