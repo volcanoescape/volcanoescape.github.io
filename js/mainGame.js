@@ -366,7 +366,7 @@ function init() {
 				//----------------------------------------------------------------//
 				// floor and cubes//
 				//----------------------------------------------------------------//
-				
+
 				// Creates wall geometry
 				wallGeometry = new THREE.PlaneGeometry(300, 10000, 360, 160);
 				for (var i = 0, l = wallGeometry.vertices.length; i < l; i++) {
@@ -717,7 +717,7 @@ function animate() {
 			scene.fog = new THREE.Fog(0xe76201, 0, 60);
 			gamePause = true;
 		}
-		// Makes lava go up 
+		// Makes lava go up
 		var lavaSpeedValue = document.getElementById("lavaSpeed").value / 10;
 		floorGeometry.translate(0, lavaSpeedValue, 0);
 		//---------------------------------------------------------//
