@@ -58,10 +58,11 @@ defPointerUnlockElement.exitPointerLock =
 	defPointerUnlockElement.mozExitPointerLock ||
 	defPointerUnlockElement.webkitExitPointerLock;
 
-	setTimeout(hideDiv, 11000);
-	function hideDiv() {
-		document.getElementById("loadingScreen").style.display="none";    
-	}
+setTimeout(hideDiv, 11000);
+function hideDiv() {
+	document.getElementById("loadingScreen").style.display = "none";
+	document.getElementById("slidecontainer").style.display = "block";
+}
 
 // Remove key elements of enviroment, replace them with texturees in new style
 function switchLevel(icey) {
@@ -149,7 +150,6 @@ quitbtn.addEventListener("click", switchTrack);
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
 mainMenuMusic = new Audio();
 mainMenuMusic.src = "audio/menuMusic.mp3";
 mainMenuMusic.loop = true;
@@ -160,36 +160,34 @@ mutebtn = document.getElementById("muteBtn");
 mutebtn.style.background = "url(images/speaker.png) no-repeat";
 mutebtn.addEventListener("click", muteAudio);
 
-function muteAudio(){
-	var isMuted = 	mainMenuMusic.muted;
-	if(	isMuted === true){
-		   mainMenuMusic.muted = !mainMenuMusic.muted;
+function muteAudio() {
+	var isMuted = mainMenuMusic.muted;
+	if (isMuted === true) {
+		mainMenuMusic.muted = !mainMenuMusic.muted;
 		mutebtn.style.background = "";
 		mutebtn.style.background = "url(images/speaker.png) no-repeat";
 		wantsToPlayMusic = true;
-	} 
+	}
 
 	if (isMuted === false) {
 		mainMenuMusic.muted = !mainMenuMusic.muted;
 		mutebtn.style.background = "";
-			mutebtn.style.background = "url(images/muted.png) no-repeat";
-		   wantsToPlayMusic = false;
+		mutebtn.style.background = "url(images/muted.png) no-repeat";
+		wantsToPlayMusic = false;
 	}
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------------
-	
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------
 playbtn = document.getElementById("playBtn");
 
-if (wantsToPlayMusic==true)
-{
+if (wantsToPlayMusic == true) {
 	playbtn.addEventListener("click", switchTrack);
 }
 
-function switchTrack(){
-	mainMenuMusic.muted=true;
-	if(wantsToPlayMusic){
+function switchTrack() {
+	mainMenuMusic.muted = true;
+	if (wantsToPlayMusic) {
 		gameAudio = new Audio();
 		gameAudio.src = "audio/gameplayMusic.mp3";
 		gameAudio.loop = true;
@@ -197,8 +195,8 @@ function switchTrack(){
 	}
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------------
-function pauseGameplay(){
-	gameAudio.muted=true;
+function pauseGameplay() {
+	gameAudio.muted = true;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------------
 
