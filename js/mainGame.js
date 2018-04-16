@@ -649,6 +649,8 @@ function onWindowResize() {
 	renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
+playDeath = true;
+
 function animate() {
 	requestAnimationFrame(animate);
 	if (controlsEnabled === true) {
@@ -768,9 +770,17 @@ function animate() {
 			}
 		}
 		if (onFloor) {
+			while (playDeath == true){
+				pauseGameplay();
+				deathAudio = new Audio();
+				deathAudio.src = "audio/deathEffect.mp3";
+				deathAudio.play();
+				playDeath = false;
+			}
 			scene.fog = new THREE.Fog(fogColour2, 0, 60);
 			displayScore();
 			gamePause = true;
+
 		}
 		// Makes lava go up
 		var lavaSpeedValue = document.getElementById("lavaSpeed").value / 10;
