@@ -166,3 +166,13 @@ video {
 	color:#ffffff;
 	font-size:30px;
 }
+#scoreDisplay{
+	position: absolute;
+	bottom:55%;
+	right:52%;
+	left:48%;
+	padding:10px;
+	color:#ffffff;
+	font-size:40px;
+	font-weight:bold;	
+}

@@ -805,3 +805,8 @@ function animate() {
 
 	renderer.render(scene, camera);
 }
+function displayScore()
+{
+	document.getElementById("scoreContainer").innerHTML = '<p id = "finalScore"></p>';
+	document.getElementById("scoreDisplay").innerHTML = score;
+}
