@@ -637,11 +637,6 @@ function init() {
 		);
 	});
 }
-function displayScore()
-{
-document.getElementById("scoreLogo").innerHTML = '<p id = "scoreLogo"></p>';
-document.getElementById("finalScore").innerHTML = score;
-}
 
 function onWindowResize() {
 	camera.aspect = window.innerWidth / window.innerHeight;
