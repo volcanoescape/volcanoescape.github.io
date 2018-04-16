@@ -147,3 +147,22 @@ video {
 	bottom: 0;
 	right: 0;
 }
+#scoreLogo{
+	position:absolute;
+	bottom: 55%;
+	right:40%;
+	padding:80px;
+	padding-right:145px;
+	background-image:url(../images/score.png);
+	background-repeat:no-repeat;
+	background-size: 200px 150px;
+}
+#finalScore{
+	position: absolute;
+	bottom:55%;
+	right:52%;
+	left:48%;
+	padding:10px;
+	color:#ffffff;
+	font-size:30px;
+}

@@ -38,6 +38,9 @@ var floorColour = 0x615d5a,
 var lavaColour = 0xd2691e,
 	lavaColour2 = 0xe60000,
 	lavaColour3 = 0x661400;
+var fogColour = 0x800000,
+    fogColour2 = 0xe76201;
+var backgroundColour = 0x660000;
 // Elements of the menu screen
 var blocker = document.getElementById("blocker");
 var instructions = document.getElementById("instructions");
@@ -58,7 +61,7 @@ defPointerUnlockElement.exitPointerLock =
 	defPointerUnlockElement.mozExitPointerLock ||
 	defPointerUnlockElement.webkitExitPointerLock;
 
-setTimeout(hideDiv, 11000);
+setTimeout(hideDiv, 1000);
 function hideDiv() {
 	document.getElementById("loadingScreen").style.display = "none";
 	document.getElementById("slidecontainer").style.display = "block";
@@ -75,18 +78,24 @@ function switchLevel(icey) {
 		floorColour = 0xffffff;
 		floorColour2 = 0xd7dbff;
 		floorColour3 = 0xa8afe3;
-		wallColour = 0xd9f8fd;
+		wallColour = 0x9eeefa;
 		lavaColour = 0x0921d2;
 		lavaColour2 = 0x8490f0;
 		lavaColour3 = 0x3e4fcc;
+		scene.background = new THREE.Color(0x032a30);
+		scene.fog = new THREE.Fog(0x055361, 0, 200);
+		fogColour2 = 0x38a1ff;
 	} else {
-		floorColour = 0x615d5a;
-		floorColour2 = 0x803e00;
-		floorColour3 = 0x000000;
-		wallColour = 0xd2691e;
-		lavaColour = 0xd2691e;
-		lavaColour2 = 0xe60000;
-		lavaColour3 = 0x661400;
+		floorColour = 0xd6dbd6;
+		floorColour2 = 0x000000;
+		floorColour3 = 0x687a68;
+		wallColour = 0x77b575;
+		lavaColour = 0x04ff00;
+		lavaColour2 = 0x38a536;
+		lavaColour3 = 0x22ce1e;
+		scene.background = new THREE.Color(0x242923);
+		scene.fog = new THREE.Fog(0x485346, 0, 200);
+		fogColour2 = 0x32e02c;
 	}
 	// Generate new floor geometry object
 	floorGeometry = new THREE.PlaneGeometry(200, 200, 70, 70);
@@ -348,8 +357,8 @@ function init() {
 					350
 				);
 				scene = new THREE.Scene();
-				scene.background = new THREE.Color(0x660000);
-				scene.fog = new THREE.Fog(0x800000, 0, 200);
+				scene.background = new THREE.Color(backgroundColour);
+				scene.fog = new THREE.Fog(fogColour, 0, 200);
 				var light = new THREE.HemisphereLight(0xeeeeff, 0x53535f, 0.75);
 				light.position.set(0.5, 1, 0.75);
 				scene.add(light);
@@ -628,6 +637,11 @@ function init() {
 		);
 	});
 }
+function displayScore()
+{
+document.getElementById("scoreLogo").innerHTML = '<p id = "scoreLogo"></p>';
+document.getElementById("finalScore").innerHTML = score;
+}
 
 function onWindowResize() {
 	camera.aspect = window.innerWidth / window.innerHeight;
@@ -754,7 +768,8 @@ function animate() {
 			}
 		}
 		if (onFloor) {
-			scene.fog = new THREE.Fog(0xe76201, 0, 60);
+			scene.fog = new THREE.Fog(fogColour2, 0, 60);
+			displayScore();
 			gamePause = true;
 		}
 		// Makes lava go up
