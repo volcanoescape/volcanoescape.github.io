@@ -39,7 +39,7 @@ var lavaColour = 0xd2691e,
 	lavaColour2 = 0xe60000,
 	lavaColour3 = 0x661400;
 var fogColour = 0x800000,
-    fogColour2 = 0xe76201;
+	fogColour2 = 0xe76201;
 var backgroundColour = 0x660000;
 // Elements of the menu screen
 var blocker = document.getElementById("blocker");
@@ -765,17 +765,17 @@ function animate() {
 			}
 		}
 		if (onFloor) {
-			while (playDeath == true){
-				pauseGameplay();
+			while (playDeath == true) {
+				//	pauseGameplay();
 				deathAudio = new Audio();
 				deathAudio.src = "audio/deathEffect.mp3";
 				deathAudio.play();
 				playDeath = false;
 			}
 			scene.fog = new THREE.Fog(fogColour2, 0, 60);
-			displayScore();
+			document.getElementById("scoreText").style.display = "none";
 			gamePause = true;
-
+			displayScore();
 		}
 		// Makes lava go up
 		var lavaSpeedValue = document.getElementById("lavaSpeed").value / 10;
@@ -800,8 +800,8 @@ function animate() {
 
 	renderer.render(scene, camera);
 }
-function displayScore()
-{
-	document.getElementById("scoreContainer").innerHTML = '<p id = "finalScore"></p>';
+function displayScore() {
+	document.getElementById("scoreContainer").innerHTML =
+		'<p id = "finalScore"></p>';
 	document.getElementById("scoreDisplay").innerHTML = score;
 }
